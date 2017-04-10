@@ -1,19 +1,50 @@
 package com.apex.shipstation.model;
 
-public class Address {
+import java.util.List;
 
+public class Customer {
+
+    private double customerId;
+    private String createDate;
+    private String modifyDate;
     private String name;
     private String company;
     private String street1;
     private String street2;
-    private String street3;
     private String city;
     private String state;
     private String postalCode;
-    private String country;
+    private String countryCode;
     private String phone;
-    private boolean residential;
+    private String email;
     private String addressVerified;
+
+    private  List<MarketplaceUsername> marketplaceUsernames;
+    private  List<Tag> tags;
+
+    public double getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(double customerId) {
+        this.customerId = customerId;
+    }
+
+    public String getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(String createDate) {
+        this.createDate = createDate;
+    }
+
+    public String getModifyDate() {
+        return modifyDate;
+    }
+
+    public void setModifyDate(String modifyDate) {
+        this.modifyDate = modifyDate;
+    }
 
     public String getName() {
         return name;
@@ -47,14 +78,6 @@ public class Address {
         this.street2 = street2;
     }
 
-    public String getStreet3() {
-        return street3;
-    }
-
-    public void setStreet3(String street3) {
-        this.street3 = street3;
-    }
-
     public String getCity() {
         return city;
     }
@@ -79,12 +102,12 @@ public class Address {
         this.postalCode = postalCode;
     }
 
-    public String getCountry() {
-        return country;
+    public String getCountryCode() {
+        return countryCode;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
+    public void setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
     }
 
     public String getPhone() {
@@ -95,12 +118,12 @@ public class Address {
         this.phone = phone;
     }
 
-    public boolean isResidential() {
-        return residential;
+    public String getEmail() {
+        return email;
     }
 
-    public void setResidential(boolean residential) {
-        this.residential = residential;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getAddressVerified() {
@@ -109,5 +132,21 @@ public class Address {
 
     public void setAddressVerified(String addressVerified) {
         this.addressVerified = addressVerified;
+    }
+
+    public List<MarketplaceUsername> getMarketplaceUsernames() {
+        return marketplaceUsernames;
+    }
+
+    public void setMarketplaceUsernames(List<MarketplaceUsername> marketplaceUsernames) {
+        this.marketplaceUsernames = marketplaceUsernames;
+    }
+
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
     }
 }

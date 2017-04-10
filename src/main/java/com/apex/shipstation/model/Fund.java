@@ -2,6 +2,10 @@ package com.apex.shipstation.model;
 
 
 public class Fund {
+
+    private String carrierCode;
+    private double amount;
+
     public String getCarrierCode() {
         return carrierCode;
     }
@@ -14,10 +18,7 @@ public class Fund {
         return amount;
     }
 
-    public void setAmount(float amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
-
-    private String carrierCode;
-    private double amount;
 }
