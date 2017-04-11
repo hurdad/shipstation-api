@@ -2,19 +2,19 @@ package com.apex.shipstation.model;
 
 import java.util.List;
 
-public class ListFulfillments {
+public class ListOrders {
 
-    private List<Fulfillment> fulfillments;
+    private List<Order> orders;
     private int total;
     private int page;
     private int pages;
 
-    public List<Fulfillment> getFulfillments() {
-        return fulfillments;
+    public List<Order> getOrders() {
+        return orders;
     }
 
-    public void setFulfillments(List<Fulfillment> fulfillments) {
-        this.fulfillments = fulfillments;
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 
     public int getTotal() {

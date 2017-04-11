@@ -1,7 +1,22 @@
 package com.apex.shipstation.model;
 
-/**
- * Created by user on 4/9/17.
- */
 public class ItemOption {
+    private String name;
+    private String value;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
 }

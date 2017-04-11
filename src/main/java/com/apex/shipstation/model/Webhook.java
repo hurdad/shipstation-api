@@ -1,7 +1,8 @@
 package com.apex.shipstation.model;
 
 public class Webhook {
-    String resource_url;
+
+    private String resource_url;
 
     public String getResource_url() {
         return resource_url;

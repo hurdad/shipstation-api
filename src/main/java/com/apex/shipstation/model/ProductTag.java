@@ -1,7 +1,7 @@
 package com.apex.shipstation.model;
 
-
 public class ProductTag {
+
     private long tagId;
     private String name;
 

@@ -4,10 +4,10 @@ import java.util.List;
 
 public class ListCustomers {
 
-    List<Customer> customers;
-    int total;
-    int page;
-    int pages;
+    private List<Customer> customers;
+    private int total;
+    private int page;
+    private int pages;
 
     public List<Customer> getCustomers() {
         return customers;

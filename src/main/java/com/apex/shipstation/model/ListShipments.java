@@ -2,19 +2,19 @@ package com.apex.shipstation.model;
 
 import java.util.List;
 
-public class ListFulfillments {
+public class ListShipments {
 
-    private List<Fulfillment> fulfillments;
+    private List<Shipment> shipments;
     private int total;
     private int page;
     private int pages;
 
-    public List<Fulfillment> getFulfillments() {
-        return fulfillments;
+    public List<Shipment> getShipments() {
+        return shipments;
     }
 
-    public void setFulfillments(List<Fulfillment> fulfillments) {
-        this.fulfillments = fulfillments;
+    public void setShipments(List<Shipment> shipments) {
+        this.shipments = shipments;
     }
 
     public int getTotal() {
@@ -41,3 +41,4 @@ public class ListFulfillments {
         this.pages = pages;
     }
 }
+

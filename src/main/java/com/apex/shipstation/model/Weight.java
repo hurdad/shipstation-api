@@ -2,8 +2,8 @@ package com.apex.shipstation.model;
 
 public class Weight {
 
-    long value;
-    String units;
+    private long value;
+    private String units;
 
     public long getValue() {
         return value;
