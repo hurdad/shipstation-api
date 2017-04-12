@@ -6,7 +6,7 @@ public class Order {
 
     private long orderId;
     private String orderNumber;
-    private String rderKey;
+    private String orderKey;
     private String orderDate;
     private String createDate;
     private String modifyDate;
@@ -40,7 +40,7 @@ public class Order {
     private InsuranceOptions insuranceOptions;
     private InternationalOptions internationalOptions;
     private AdvancedOptions advancedOptions;
-    //TODO FIX ME List<double> tagIds;
+    private long[] tagIds;
     private String userId;
     private boolean externallyFulfilled;
     private String externallyFulfilledBy;
@@ -61,12 +61,12 @@ public class Order {
         this.orderNumber = orderNumber;
     }
 
-    public String getRderKey() {
-        return rderKey;
+    public String getOrderKey() {
+        return orderKey;
     }
 
-    public void setRderKey(String rderKey) {
-        this.rderKey = rderKey;
+    public void setOrderKey(String orderKey) {
+        this.orderKey = orderKey;
     }
 
     public String getOrderDate() {
@@ -331,6 +331,14 @@ public class Order {
 
     public void setAdvancedOptions(AdvancedOptions advancedOptions) {
         this.advancedOptions = advancedOptions;
+    }
+
+    public long[] getTagIds() {
+        return tagIds;
+    }
+
+    public void setTagIds(long[] tagIds) {
+        this.tagIds = tagIds;
     }
 
     public String getUserId() {

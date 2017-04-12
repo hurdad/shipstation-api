@@ -4,6 +4,7 @@ import com.apex.shipstation.model.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -130,6 +131,33 @@ public class API {
         return response;
     }
 
+    private Response PUT(String api_url, Entity payload) throws InterruptedException {
+
+        // init
+        boolean retry = true;
+        Response response = null;
+
+        do {
+
+            // auth
+            String auth = apiKey + ":" + apiSecret;
+            String authB64 = Base64.getEncoder().encodeToString(auth.getBytes());
+
+            // HTTP request
+            Client client = ClientBuilder.newClient();
+            response = client.target(api_url).request(MediaType.APPLICATION_JSON_TYPE)
+                    .header("Authorization", "Basic " + authB64).put(payload);
+
+            // check if we need to wait
+            if (response != null) {
+                retry = checkRateLimit(response);
+            }
+
+        } while (retry);// retry if we hit a rate limit
+
+        return response;
+    }
+
     public List<Tag> listTags() throws IOException, InterruptedException {
         Response res = GET(apiBaseURL + "/accounts/listtags");
         return mapper.readValue(res.readEntity(String.class), new TypeReference<List<Tag>>() {
@@ -189,19 +217,18 @@ public class API {
         return mapper.readValue(res.readEntity(String.class), ListFulfillments.class);
     }
 
-    public Order getOrder(String orderId) throws IOException, InterruptedException {
+    public Order getOrder(long orderId) throws IOException, InterruptedException {
         Response res = GET(apiBaseURL + "/orders/" + orderId);
         return mapper.readValue(res.readEntity(String.class), Order.class);
     }
 
-    public SuccessResponse deleteOrder(String orderId) throws IOException, InterruptedException {
+    public SuccessResponse deleteOrder(long orderId) throws IOException, InterruptedException {
         Response res = DELETE(apiBaseURL + "/orders/" + orderId);
         return mapper.readValue(res.readEntity(String.class), SuccessResponse.class);
     }
 
-    public SuccessResponse addTagToOrder(Tag tag) throws IOException, InterruptedException {
-        String JSON = mapper.writeValueAsString(tag);
-        Entity<String> payload = Entity.json(JSON);
+    public SuccessResponse addTagToOrder(long orderId, long tagId) throws IOException, InterruptedException {
+        Entity payload = Entity.json("{ 'orderId':" + orderId + ", 'tagId':" + tagId +"}");
         Response res = POST(apiBaseURL + "/orders/addtag", payload);
         return mapper.readValue(res.readEntity(String.class), SuccessResponse.class);
     }
@@ -213,8 +240,8 @@ public class API {
         return mapper.readValue(res.readEntity(String.class), SuccessResponse.class);
     }
 
-    public Label createLabelForOrder(LabelForOrderPayload payload) throws IOException, InterruptedException {
-        String JSON = mapper.writeValueAsString(payload);
+    public Label createLabelForOrder(LabelForOrderPayload orderPayload) throws IOException, InterruptedException {
+        String JSON = mapper.writeValueAsString(orderPayload);
         Entity<String> payload = Entity.json(JSON);
         Response res = POST(apiBaseURL + "/orders/createlabelfororder", payload);
         return mapper.readValue(res.readEntity(String.class), Label.class);
@@ -227,11 +254,11 @@ public class API {
         return mapper.readValue(res.readEntity(String.class), Order.class);
     }
 
-    public BuilkOrdersResponse createOrders(List<Order> orders) throws IOException, InterruptedException {
+    public BulkOrdersResponse createOrders(List<Order> orders) throws IOException, InterruptedException {
         String JSON = mapper.writeValueAsString(orders);
         Entity<String> payload = Entity.json(JSON);
         Response res = POST(apiBaseURL + "/orders/createorders", payload);
-        return mapper.readValue(res.readEntity(String.class), BuilkOrdersResponse.class);
+        return mapper.readValue(res.readEntity(String.class), BulkOrdersResponse.class);
     }
 
     private SuccessResponse holdOrderUntil(HoldUntilOrder order) throws IOException, InterruptedException {
@@ -256,8 +283,8 @@ public class API {
         return mapper.readValue(res.readEntity(String.class), ListOrders.class);
     }
 
-    public OrderAsShippedResponse markAnOrderAsShipped(OrderAsShippedPayload payload) throws IOException, InterruptedException {
-        String JSON = mapper.writeValueAsString(payload);
+    public OrderAsShippedResponse markAnOrderAsShipped(OrderAsShippedPayload orderAsShippedPayload) throws IOException, InterruptedException {
+        String JSON = mapper.writeValueAsString(orderAsShippedPayload);
         Entity<String> payload = Entity.json(JSON);
         Response res = POST(apiBaseURL + "/orders/markasshipped", payload);
         return mapper.readValue(res.readEntity(String.class), OrderAsShippedResponse.class);
@@ -279,7 +306,7 @@ public class API {
     public SuccessResponse unassignUserFromOrder(List<String> orderIds) throws IOException, InterruptedException {
         Entity payload = Entity.json("{ 'orderIds':" + String.join(",", orderIds) + "}");
         Response res = POST(apiBaseURL + "/orders/removetag", payload);
-        return mapper.readValue(res.readEntity(String.class), Tag.class);
+        return mapper.readValue(res.readEntity(String.class), SuccessResponse.class);
     }
 
     public Product getProduct(long productId) throws IOException, InterruptedException {
@@ -290,7 +317,7 @@ public class API {
     public SuccessResponse updateProduct(Product product) throws IOException, InterruptedException {
         String JSON = mapper.writeValueAsString(product);
         Entity<String> payload = Entity.json(JSON);
-        Response res = POST(apiBaseURL + "products/" + product.getProductId(), payload);
+        Response res = PUT(apiBaseURL + "/products/" + product.getProductId(), payload);
         return mapper.readValue(res.readEntity(String.class), SuccessResponse.class);
     }
 
@@ -314,11 +341,11 @@ public class API {
         return mapper.readValue(res.readEntity(String.class), ListShipments.class);
     }
 
-    public ShipmentLabel createShipmentLabel(ShipmentLabelPayload payload) throws IOException, InterruptedException{
-        String JSON = mapper.writeValueAsString(payload);
+    public ShipmentLabel createShipmentLabel(ShipmentLabelPayload shipmentLabelPayload) throws IOException, InterruptedException {
+        String JSON = mapper.writeValueAsString(shipmentLabelPayload);
         Entity<String> payload = Entity.json(JSON);
         Response res = POST(apiBaseURL + "/shipments/createlabel", payload);
-        return mapper.readValue(res.readEntity(String.class), Rate.class);
+        return mapper.readValue(res.readEntity(String.class), ShipmentLabel.class);
     }
 
 
@@ -337,70 +364,100 @@ public class API {
 
     public Store getStore(long storeId) throws IOException, InterruptedException {
         Response res = GET(apiBaseURL + "/stores/" + storeId);
-        return mapper.readValue(res.readEntity(String.class), ListShipments.class);
+        return mapper.readValue(res.readEntity(String.class), Store.class);
     }
 
-
-    updateStore() {
-
+    public Store updateStore(Store store) throws IOException, InterruptedException {
+        String JSON = mapper.writeValueAsString(store);
+        Entity<String> payload = Entity.json(JSON);
+        Response res = PUT(apiBaseURL + "/stores/" + store.getStoreId(), payload);
+        return mapper.readValue(res.readEntity(String.class), Store.class);
     }
 
     public StoreRefreshStatusResponse getStoreRefreshStatus(long storeId) throws IOException, InterruptedException {
-        Response res = GET(apiBaseURL + "stores/getrefreshstatus?storeId=" + storeId);
+        Response res = GET(apiBaseURL + "/stores/getrefreshstatus?storeId=" + storeId);
         return mapper.readValue(res.readEntity(String.class), StoreRefreshStatusResponse.class);
     }
+
     public SuccessResponse refresStore(long storeId) throws IOException, InterruptedException {
         Entity payload = Entity.json("{ ''storeId'':" + storeId + "}");
         Response res = POST(apiBaseURL + "/stores/refreshstore", payload);
         return mapper.readValue(res.readEntity(String.class), SuccessResponse.class);
     }
 
-    listStores() {
-
+    public List<Store> listStores(boolean showInactive, long marketplaceId) throws IOException, InterruptedException {
+        Response res = GET(apiBaseURL + "/stores?showInactive={showInactive}?marketplaceId={marketplaceId}");
+        return mapper.readValue(res.readEntity(String.class), new TypeReference<List<Store>>() {
+        });
     }
 
-    listMarketplaces() {
-
+    public List<Store> listStores(boolean showInactive) throws IOException, InterruptedException {
+        Response res = GET(apiBaseURL + "/stores?showInactive={showInactive}");
+        return mapper.readValue(res.readEntity(String.class), new TypeReference<List<Store>>() {
+        });
     }
 
-    deactivateStore() {
-
+    public List<Marketplace> listMarketplaces() throws IOException, InterruptedException {
+        Response res = GET(apiBaseURL + "/stores/marketplaces");
+        return mapper.readValue(res.readEntity(String.class), new TypeReference<List<Marketplace>>() {
+        });
     }
 
-    reactivateStoer() {
-
+    public SuccessResponse deactivateStore(long storeId) throws IOException, InterruptedException {
+        Entity payload = Entity.json("{ 'storeId':" + storeId + "}");
+        Response res = POST(apiBaseURL + "/stores/deactivate", payload);
+        return mapper.readValue(res.readEntity(String.class), SuccessResponse.class);
     }
 
-
-    listUsers() {
-
+    public SuccessResponse reactivateStore(long storeId) throws IOException, InterruptedException {
+        Entity payload = Entity.json("{ 'storeId':" + storeId + "}");
+        Response res = POST(apiBaseURL + "/stores/reactivate", payload);
+        return mapper.readValue(res.readEntity(String.class), SuccessResponse.class);
     }
 
+    /*
+        listUsers() {
 
-    getWarehouse() {
-
+        }
+    */
+    public Warehouse getWarehouse(long warehouseId) throws IOException, InterruptedException {
+        Response res = GET(apiBaseURL + "/warehouses/" + warehouseId);
+        return mapper.readValue(res.readEntity(String.class), Warehouse.class);
     }
 
-    updateWarehouse() {
-
+    public Warehouse updateWarehouse(Warehouse warehouse) throws IOException, InterruptedException {
+        String JSON = mapper.writeValueAsString(warehouse);
+        Entity<String> payload = Entity.json(JSON);
+        Response res = PUT(apiBaseURL + "/warehouses/" + warehouse.getWarehouseId(), payload);
+        return mapper.readValue(res.readEntity(String.class), Warehouse.class);
     }
 
-    createWarehouse() {
+    /*
+        createWarehouse() {
 
+
+        }
+    */
+    public List<Warehouse> listWarehouses() throws IOException, InterruptedException {
+        Response res = GET(apiBaseURL + "/warehouses");
+        return mapper.readValue(res.readEntity(String.class), new TypeReference<List<Warehouse>>() {
+        });
     }
 
-    listWarehouses() {
-
+    public ListWebhooks listWebhooks() throws IOException, InterruptedException {
+        Response res = GET(apiBaseURL + "/webhooks");
+        return mapper.readValue(res.readEntity(String.class), ListWebhooks.class);
     }
 
-    listWebhooks() {
-
+    public int subscribeToWebhook(SubscribeWebhookPayload subscribeWebhookPayload) throws IOException, InterruptedException {
+        String JSON = mapper.writeValueAsString(subscribeWebhookPayload);
+        Entity<String> payload = Entity.json(JSON);
+        Response res = POST(apiBaseURL + "/webhooks/subscribe", payload);
+        JsonNode root = mapper.readTree(res.readEntity(String.class));
+        return root.path("id").asInt();
     }
 
-    subscribeToWebhook() {
-
+    public void unsubscribeToWebhook(long webhookId) throws IOException, InterruptedException {
+        Response res = DELETE(apiBaseURL + "/webhooks/webhookId/" + webhookId);
     }
-
-    unsubscribeToWebhook() {
-
-    }
+}

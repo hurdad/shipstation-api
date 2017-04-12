@@ -12,7 +12,7 @@ public class AdvancedOptions {
     private String customField3;
     private String source;
     private boolean mergedOrSplit;
-    //   mergedIds	number[]	Read-Only: Array of orderIds. Each orderId identifies an order that was merged with the associated order. Read Only
+    private long[]  mergedIds;
     private long parentId;
     private String billToParty;
     private String billToAccount;
@@ -97,6 +97,14 @@ public class AdvancedOptions {
 
     public void setMergedOrSplit(boolean mergedOrSplit) {
         this.mergedOrSplit = mergedOrSplit;
+    }
+
+    public long[] getMergedIds() {
+        return mergedIds;
+    }
+
+    public void setMergedIds(long[] mergedIds) {
+        this.mergedIds = mergedIds;
     }
 
     public long getParentId() {
