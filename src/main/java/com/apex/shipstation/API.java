@@ -3,8 +3,8 @@ package com.apex.shipstation;
 import com.apex.shipstation.model.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -228,7 +228,7 @@ public class API {
     }
 
     public SuccessResponse addTagToOrder(long orderId, long tagId) throws IOException, InterruptedException {
-        Entity payload = Entity.json("{ 'orderId':" + orderId + ", 'tagId':" + tagId +"}");
+        Entity payload = Entity.json("{ 'orderId':" + orderId + ", 'tagId':" + tagId + "}");
         Response res = POST(apiBaseURL + "/orders/addtag", payload);
         return mapper.readValue(res.readEntity(String.class), SuccessResponse.class);
     }
@@ -261,9 +261,8 @@ public class API {
         return mapper.readValue(res.readEntity(String.class), BulkOrdersResponse.class);
     }
 
-    private SuccessResponse holdOrderUntil(HoldUntilOrder order) throws IOException, InterruptedException {
-        String JSON = mapper.writeValueAsString(order);
-        Entity<String> payload = Entity.json(JSON);
+    public SuccessResponse holdOrderUntil(long orderId, String date) throws IOException, InterruptedException {
+        Entity payload = Entity.json("{ 'orderId':" + orderId + ", 'holdUntilDate' : '" + date + "'}");
         Response res = POST(apiBaseURL + "/orders/holduntil", payload);
         return mapper.readValue(res.readEntity(String.class), SuccessResponse.class);
     }
@@ -290,11 +289,10 @@ public class API {
         return mapper.readValue(res.readEntity(String.class), OrderAsShippedResponse.class);
     }
 
-    public Tag removeTagFromOrder(Tag tag) throws IOException, InterruptedException {
-        String JSON = mapper.writeValueAsString(tag);
-        Entity<String> payload = Entity.json(JSON);
+    public SuccessResponse removeTagFromOrder(long orderId, long tagId) throws IOException, InterruptedException {
+        Entity payload = Entity.json("{ 'orderId':" + orderId + ", 'tagId':" + tagId + "}");
         Response res = POST(apiBaseURL + "/orders/removetag", payload);
-        return mapper.readValue(res.readEntity(String.class), Tag.class);
+        return mapper.readValue(res.readEntity(String.class), SuccessResponse.class);
     }
 
     public SuccessResponse restoreOrderFromOnHold(long orderId) throws IOException, InterruptedException {
@@ -305,7 +303,7 @@ public class API {
 
     public SuccessResponse unassignUserFromOrder(List<String> orderIds) throws IOException, InterruptedException {
         Entity payload = Entity.json("{ 'orderIds':" + String.join(",", orderIds) + "}");
-        Response res = POST(apiBaseURL + "/orders/removetag", payload);
+        Response res = POST(apiBaseURL + "/orders/unassignuser", payload);
         return mapper.readValue(res.readEntity(String.class), SuccessResponse.class);
     }
 
