@@ -32,3 +32,9 @@ API api = new API("https://ssapi.shipstation.com", "api_key", "api_secret");
 Order order = api.getOrder(123456789);
 System.out.println(order.getOrderNumber());
 ```
+
+## Known Issues
+```
+listUsers - does not work with the mock api. I have confirmed it works on the production api.
+listWebhools - does not work due to uppercase keys in the JSON returned from the call. 
+```
