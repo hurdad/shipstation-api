@@ -11,15 +11,23 @@ Maven
 
 ## Build
 ```
-mvn
+$ mvn
 ```
 
 ## Run Test
 ```
-mvn test
+$ mvn test
 ```
 
 ## Create JAR
 ```
-mvn package
+$ mvn package
+```
+
+## Usage
+```
+# See APITest.java for examples of each API call
+API api = new API("https://ssapi.shipstation.com", "api_key", "api_secret");
+Order order = api.getOrder(123456789);
+System.out.println(order.getOrderNumber());
 ```
