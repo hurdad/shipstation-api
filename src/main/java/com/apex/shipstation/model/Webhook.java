@@ -14,7 +14,7 @@ public class Webhook {
     private String Name;
     private String BulkCopyBatchID;
     private String BulkCopyRecordID;
-    boolean Active;
+    private boolean Active;
     private List<String> WebhookLogs;
     private String Seller;
     private String Store;

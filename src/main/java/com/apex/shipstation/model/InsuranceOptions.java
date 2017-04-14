@@ -4,7 +4,7 @@ public class InsuranceOptions {
 
     private String provider;
     private boolean insureShipment;
-    private float insuredValue;
+    private double insuredValue;
 
     public String getProvider() {
         return provider;
@@ -22,11 +22,11 @@ public class InsuranceOptions {
         this.insureShipment = insureShipment;
     }
 
-    public float getInsuredValue() {
+    public double getInsuredValue() {
         return insuredValue;
     }
 
-    public void setInsuredValue(float insuredValue) {
+    public void setInsuredValue(double insuredValue) {
         this.insuredValue = insuredValue;
     }
 }

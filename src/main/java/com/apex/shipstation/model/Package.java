@@ -6,6 +6,7 @@ public class Package {
     private String code;
     private String name;
     private boolean domestic;
+    private boolean international;
 
     public String getCarrierCode() {
         return carrierCode;
@@ -46,9 +47,5 @@ public class Package {
     public void setInternational(boolean international) {
         this.international = international;
     }
-
-    private boolean international;
-
-
 }
 

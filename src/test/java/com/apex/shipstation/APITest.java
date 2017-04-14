@@ -12,7 +12,6 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-
 public class APITest {
     private static API api;
 
@@ -23,12 +22,12 @@ public class APITest {
 
     @Before
     public void beforeEachTest() {
-        //  System.out.println("This is executed before each Test");
+
     }
 
     @After
     public void afterEachTest() {
-        // System.out.println("This is exceuted after each Test");
+
     }
 
     @Test
@@ -88,19 +87,25 @@ public class APITest {
 
     }
 
-    /*
     @Test
     public void testListPackages() throws IOException, InterruptedException {
 
-        Package p = api.listPackages();
+        List<com.apex.shipstation.model.Package> packages = api.listPackages("express_1");
 
-        assertEquals(carrier.getName(), "Stamps.com");
-        assertEquals(carrier.getCode(), "stamps_com");
-        assertEquals(carrier.getAccountNumber(), "SS123");
-        assertEquals(carrier.isRequiresFundedAccount(), true);
-        assertEquals(carrier.getBalance(), 24.14, 0.01);
+        assertEquals(packages.get(0).getCarrierCode(), "express_1");
+        assertEquals(packages.get(0).getCode(), "cubic");
+        assertEquals(packages.get(0).getName(), "Cubic");
+        assertEquals(packages.get(0).isDomestic(), true);
+        assertEquals(packages.get(0).isInternational(), false);
+
+        assertEquals(packages.get(1).getCarrierCode(), "express_1");
+        assertEquals(packages.get(1).getCode(), "dvd_flat_rate_box");
+        assertEquals(packages.get(1).getName(), "DVD Flat Rate Box");
+        assertEquals(packages.get(1).isDomestic(), false);
+        assertEquals(packages.get(1).isInternational(), true);
+
     }
-*/
+
     @Test
     public void testListServices() throws IOException, InterruptedException {
 
@@ -118,7 +123,7 @@ public class APITest {
 
         Customer customer = api.getCustomer("12345678");
 
-        //   assertEquals(customer.getCustomerId(), 12345678);
+        assertEquals(customer.getCustomerId(), 12345678);
         assertEquals(customer.getCreateDate(), "2014-11-18T10:33:01.1900000");
         assertEquals(customer.getModifyDate(), "2014-11-18T10:33:01.1900000");
         assertEquals(customer.getName(), "Cam Newton");
@@ -159,7 +164,7 @@ public class APITest {
 
         Customer customer = listCustomer.getCustomers().get(0);
 
-//        assertEquals(customer.getCustomerId(), 12345678);
+        assertEquals(customer.getCustomerId(), 12345678);
         assertEquals(customer.getCreateDate(), "2014-11-18T10:33:01.1900000");
         assertEquals(customer.getModifyDate(), "2014-11-18T10:33:01.1900000");
         assertEquals(customer.getName(), "Cam Newton");
@@ -214,7 +219,7 @@ public class APITest {
         assertEquals(fulfillments.getFulfillments().get(0).getCarrierCode(), "USPS");
         assertEquals(fulfillments.getFulfillments().get(0).getFulfillmentProviderCode(), null);
         assertEquals(fulfillments.getFulfillments().get(0).getFulfillmentServiceCode(), null);
-//        assertEquals(fulfillments.getFulfillments().get(0).getFulfillmentFee(), 0);
+        assertEquals(fulfillments.getFulfillments().get(0).getFulfillmentFee(), 0, 0.01);
         assertEquals(fulfillments.getFulfillments().get(0).isVoidRequested(), false);
         assertEquals(fulfillments.getFulfillments().get(0).isVoided(), false);
         assertEquals(fulfillments.getFulfillments().get(0).isMarketplaceNotified(), true);
@@ -231,7 +236,7 @@ public class APITest {
         assertEquals(fulfillments.getFulfillments().get(0).getShipTo().getCountry(), "US");
 
         assertEquals(fulfillments.getFulfillments().get(0).getShipTo().getPhone(), "512-485-4282");
-        //   assertEquals(fulfillments.getFulfillments().get(0).getShipTo().isResidential(), null);
+        assertEquals(fulfillments.getFulfillments().get(0).getShipTo().isResidential(), false); //null boolean is a false
         assertEquals(fulfillments.getFulfillments().get(0).getShipTo().getAddressVerified(), null);
 
     }
@@ -261,7 +266,7 @@ public class APITest {
         assertEquals(order.getBillTo().getState(), null);
         assertEquals(order.getBillTo().getPostalCode(), null);
         assertEquals(order.getBillTo().getPhone(), null);
-        //  assertEquals(order.getBillTo().isResidential(), false);
+        assertEquals(order.getBillTo().isResidential(), false);
         assertEquals(order.getBillTo().getState(), null);
         assertEquals(order.getBillTo().getAddressVerified(), null);
 
@@ -289,8 +294,8 @@ public class APITest {
         assertEquals(items.get(0).getWeight().getUnits(), "ounces");
         assertEquals(items.get(0).getQuantity(), 2, 0.01);
         assertEquals(items.get(0).getUnitPrice(), 99.99, 0.01);
-        //       assertEquals(items.get(0).getTaxAmount(), null);
-//        assertEquals(items.get(0).getShippingAmount(), null);
+        assertEquals(items.get(0).getTaxAmount(), 0.0, 0.01); //null double is 0.0
+        assertEquals(items.get(0).getShippingAmount(), 0.0, 0.01);//null double is 0.0
         assertEquals(items.get(0).getWarehouseLocation(), "Aisle 1, Bin 7");
         assertEquals(items.get(0).getOptions().get(0).getName(), "Size");
         assertEquals(items.get(0).getOptions().get(0).getValue(), "Large");
@@ -327,8 +332,8 @@ public class APITest {
         assertEquals(order.getAdvancedOptions().isSaturdayDelivery(), false);
         assertEquals(order.getAdvancedOptions().isContainsAlcohol(), false);
         assertEquals(order.getAdvancedOptions().isMergedOrSplit(), false);
-        //   assertEquals(order.getAdvancedOptions().getMergedIds(), false);
-        //      assertEquals(order.getAdvancedOptions().getParentId(), null);
+        assertEquals(order.getAdvancedOptions().getMergedIds().length, 0); //checking length, cant compare long[]
+        assertEquals(order.getAdvancedOptions().getParentId(), null);
         assertEquals(order.getAdvancedOptions().getStoreId(), 26815);
         assertEquals(order.getAdvancedOptions().getCustomField1(), "Custom data that you can add to an order. See Custom Field #2 & #3 for more info!");
         assertEquals(order.getAdvancedOptions().getCustomField2(), "Per UI settings, this information can appear on some carrier's shipping labels. See link below");
@@ -407,7 +412,7 @@ public class APITest {
     }
 
     @Test
-    public void testCreate() throws IOException, InterruptedException {
+    public void testOrderCreate() throws IOException, InterruptedException {
 
         Order order = new Order();
         order.setOrderId(140335319);
@@ -459,7 +464,6 @@ public class APITest {
     @Test
     public void testListOrder() throws IOException, InterruptedException {
 
-
         ListOrders listOrders = api.listOrders();
 
         Order order = listOrders.getOrders().get(0);
@@ -486,7 +490,7 @@ public class APITest {
         assertEquals(order.getBillTo().getState(), null);
         assertEquals(order.getBillTo().getPostalCode(), null);
         assertEquals(order.getBillTo().getPhone(), null);
-        //  assertEquals(order.getBillTo().isResidential(), false);
+        assertEquals(order.getBillTo().isResidential(), false);
         assertEquals(order.getBillTo().getState(), null);
         assertEquals(order.getBillTo().getAddressVerified(), null);
 
@@ -514,8 +518,8 @@ public class APITest {
         assertEquals(items.get(0).getWeight().getUnits(), "ounces");
         assertEquals(items.get(0).getQuantity(), 2, 0.01);
         assertEquals(items.get(0).getUnitPrice(), 49.99, 0.01);
-        //   assertEquals(items.get(0).getTaxAmount(), null);
-        //  assertEquals(items.get(0).getShippingAmount(), null);
+        assertEquals(items.get(0).getTaxAmount(), 0.0, 0.01);//null double is 0.0
+        assertEquals(items.get(0).getShippingAmount(), 0.0, 0.01);//null double is 0.0
         assertEquals(items.get(0).getWarehouseLocation(), "Aisle 1, Bin 7");
         assertEquals(order.getOrderTotal(), 387.97, 0.01);
         assertEquals(order.getAmountPaid(), 412.97, 0.01);
@@ -562,8 +566,8 @@ public class APITest {
         assertEquals(order.getAdvancedOptions().isSaturdayDelivery(), false);
         assertEquals(order.getAdvancedOptions().isContainsAlcohol(), false);
         assertEquals(order.getAdvancedOptions().isMergedOrSplit(), false);
-        //   assertEquals(order.getAdvancedOptions().getMergedIds(), false);
-        //      assertEquals(order.getAdvancedOptions().getParentId(), null);
+        assertEquals(order.getAdvancedOptions().getMergedIds().length, 0); //checking length, cant compare long[]
+        assertEquals(order.getAdvancedOptions().getParentId(), null);
         assertEquals(order.getAdvancedOptions().getStoreId(), 12345);
         assertEquals(order.getAdvancedOptions().getCustomField1(), "SKU: CN-9876 x 1");
         assertEquals(order.getAdvancedOptions().getCustomField2(), "SKU: Ele-123 x 2");
@@ -610,7 +614,7 @@ public class APITest {
         assertEquals(order.getBillTo().getState(), null);
         assertEquals(order.getBillTo().getPostalCode(), null);
         assertEquals(order.getBillTo().getPhone(), null);
-        //  assertEquals(order.getBillTo().isResidential(), false);
+        assertEquals(order.getBillTo().isResidential(), false);
         assertEquals(order.getBillTo().getState(), null);
         assertEquals(order.getBillTo().getAddressVerified(), null);
 
@@ -638,8 +642,8 @@ public class APITest {
         assertEquals(items.get(0).getWeight().getUnits(), "ounces");
         assertEquals(items.get(0).getQuantity(), 2, 0.01);
         assertEquals(items.get(0).getUnitPrice(), 99.99, 0.01);
-        //       assertEquals(items.get(0).getTaxAmount(), null);
-//        assertEquals(items.get(0).getShippingAmount(), null);
+        assertEquals(items.get(0).getTaxAmount(), 2.5, 0.01);
+        assertEquals(items.get(0).getShippingAmount(), 5, 0.01);
         assertEquals(items.get(0).getWarehouseLocation(), "Aisle 1, Bin 7");
         assertEquals(items.get(0).getOptions().get(0).getName(), "Size");
         assertEquals(items.get(0).getOptions().get(0).getValue(), "Large");
@@ -676,8 +680,8 @@ public class APITest {
         assertEquals(order.getAdvancedOptions().isSaturdayDelivery(), false);
         assertEquals(order.getAdvancedOptions().isContainsAlcohol(), false);
         assertEquals(order.getAdvancedOptions().isMergedOrSplit(), false);
-        //   assertEquals(order.getAdvancedOptions().getMergedIds(), false);
-        //      assertEquals(order.getAdvancedOptions().getParentId(), null);
+        assertEquals(order.getAdvancedOptions().getMergedIds().length, 0); //checking length, cant compare long[]
+        assertEquals(order.getAdvancedOptions().getParentId(), null);
         assertEquals(order.getAdvancedOptions().getStoreId(), 12345);
         assertEquals(order.getAdvancedOptions().getCustomField1(), "Custom data that you can add to an order. See Custom Field #2 & #3 for more info!");
         assertEquals(order.getAdvancedOptions().getCustomField2(), "Per UI settings, this information can appear on some carrier's shipping labels. See link below");
@@ -778,9 +782,9 @@ public class APITest {
         assertEquals(product.getDefaultConfirmation(), "direct_signature");
         assertEquals(product.getDefaultIntlConfirmation(), "adult_signature");
         assertEquals(product.getCustomsDescription(), null);
-        //  assertEquals(product.getCustomsValue(), null);
+        assertEquals(product.getCustomsValue(), 0.0, 0.01);//null double is 0.0
         assertEquals(product.getCustomsCountryCode(), null);
-//        assertEquals(product.isNoCustoms(), null);
+        assertEquals(product.isNoCustoms(), false);//null boolean is false
         assertEquals(product.getTags().get(0).getTagId(), 9180);
         assertEquals(product.getTags().get(0).getName(), "APItest");
 
@@ -833,9 +837,9 @@ public class APITest {
         assertEquals(product.getDefaultConfirmation(), "direct_signature");
         assertEquals(product.getDefaultIntlConfirmation(), "adult_signature");
         assertEquals(product.getCustomsDescription(), null);
-        //       assertEquals(product.getCustomsValue(), null);
+        assertEquals(product.getCustomsValue(), 0.0, 0.01);//null double is 0.0
         assertEquals(product.getCustomsCountryCode(), null);
-//        assertEquals(product.isNoCustoms(), null);
+        assertEquals(product.isNoCustoms(), false);//null boolean is false
         assertEquals(product.getTags().get(0).getTagId(), 9180);
         assertEquals(product.getTags().get(0).getName(), "APItest");
 
@@ -881,7 +885,7 @@ public class APITest {
         assertEquals(shipment.getShipTo().getPostalCode(), "78652-3602");
         assertEquals(shipment.getShipTo().getCountry(), "US");
         assertEquals(shipment.getShipTo().getPhone(), "2101235544");
-//        assertEquals(shipment.getShipTo().isResidential(), null);
+        assertEquals(shipment.getShipTo().isResidential(), false);//null boolean is false
         assertEquals(shipment.getWeight().getValue(), 1);
         assertEquals(shipment.getWeight().getUnits(), "ounces");
         assertEquals(shipment.getDimensions(), null);
@@ -920,7 +924,7 @@ public class APITest {
         Shipment shipment = api.createShipmentLabel(shipmentLabelPayload);
 
         assertEquals(shipment.getShipmentId(), 123456789);
-//        assertEquals(shipment.getOrderId(), null);
+        assertEquals(shipment.getOrderId(), 0);//null long is 0
         assertEquals(shipment.getUserId(), null);
         assertEquals(shipment.getOrderNumber(), null);
         assertEquals(shipment.getCreateDate(), "2016-04-03T12:11:36.8630000");
@@ -934,10 +938,10 @@ public class APITest {
         assertEquals(shipment.getServiceCode(), "fedex_ground");
         assertEquals(shipment.getPackageCode(), "package");
         assertEquals(shipment.getConfirmation(), "delivery");
-//        assertEquals(shipment.getWarehouseId(), null);
+        assertEquals(shipment.getWarehouseId(), 0);//null long is 0
         assertEquals(shipment.isVoided(), false);
         assertEquals(shipment.getVoidDate(), null);
-//        assertEquals(shipment.isMarketplaceNotified(), true);
+        assertEquals(shipment.isMarketplaceNotified(), false);
         assertEquals(shipment.getNotifyErrorMessage(), null);
         assertEquals(shipment.getShipTo(), null);
         assertEquals(shipment.getWeight(), null);
@@ -959,7 +963,7 @@ public class APITest {
         rate.setToState("DC");
         rate.setToCountry("US");
         rate.setToPostalCode("20500");
-        //etc
+        //etc...
 
         List<Rate> rates = api.getRates(rate);
 
@@ -1016,7 +1020,7 @@ public class APITest {
         Store storePayload = new Store();
         storePayload.setStoreId(12345);
         storePayload.setStoreName("WooCommerce Store");
-        //etc
+        //etc...
 
         Store store = api.updateStore(storePayload);
 
@@ -1153,7 +1157,7 @@ public class APITest {
         assertEquals(warehouse.getReturnAddress().getPostalCode(), "78703");
         assertEquals(warehouse.getReturnAddress().getCountry(), "US");
         assertEquals(warehouse.getReturnAddress().getPhone(), "512-555-5555");
-    //    assertEquals(warehouse.getReturnAddress().isResidential(), true);
+        assertEquals(warehouse.getReturnAddress().isResidential(), false);//null boolean is false
         assertEquals(warehouse.getReturnAddress().getAddressVerified(), null);
 
         assertEquals(warehouse.getCreateDate(), "2015-07-02T08:38:31.4870000");
@@ -1194,7 +1198,7 @@ public class APITest {
         assertEquals(warehouse.getReturnAddress().getPostalCode(), "78703");
         assertEquals(warehouse.getReturnAddress().getCountry(), "US");
         assertEquals(warehouse.getReturnAddress().getPhone(), "512-555-5555");
-//        assertEquals(warehouse.getReturnAddress().isResidential(), true);
+        assertEquals(warehouse.getReturnAddress().isResidential(), false);//null boolean is false
         assertEquals(warehouse.getReturnAddress().getAddressVerified(), null);
 
         assertEquals(warehouse.getCreateDate(), "2015-07-02T08:38:31.4870000");
@@ -1235,13 +1239,12 @@ public class APITest {
         assertEquals(warehouse.getReturnAddress().getPostalCode(), "78703");
         assertEquals(warehouse.getReturnAddress().getCountry(), "US");
         assertEquals(warehouse.getReturnAddress().getPhone(), "512-555-5555");
-//        assertEquals(warehouse.getReturnAddress().isResidential(), true);
+        assertEquals(warehouse.getReturnAddress().isResidential(), false);//null boolean is false
         assertEquals(warehouse.getReturnAddress().getAddressVerified(), null);
 
         assertEquals(warehouse.getCreateDate(), "2015-07-02T08:38:31.4870000");
         assertEquals(warehouse.isIsDefault(), true);
     }
-
 
     @Test
     public void testListWarehouse() throws IOException, InterruptedException {
@@ -1281,26 +1284,47 @@ public class APITest {
         assertEquals(warehouse.isIsDefault(), false);
 
     }
-/*
+
+    /*
+        @Test
+        public void testListWebhooks() throws IOException, InterruptedException {
+
+            ListWebhooks webhooks = api.listWebhooks();
+
+            assertEquals(webhooks.getWebhooks().get(0).isIsLabelAPIHook(), false);
+            assertEquals(webhooks.getWebhooks().get(0).getWebHookID(), 123);
+            assertEquals(webhooks.getWebhooks().get(0).getSellerID(), 100000);
+            assertEquals(webhooks.getWebhooks().get(0).getHookType(), "ITEM_ORDER_NOTIFY");
+            assertEquals(webhooks.getWebhooks().get(0).getMessageFormat(), "Json")
+            assertEquals(webhooks.getWebhooks().get(0).getUrl(), "http://example.endpoint/orders");
+            assertEquals(webhooks.getWebhooks().get(0).getName(), "My Order Webhook");
+            assertEquals(webhooks.getWebhooks().get(0).getBulkCopyBatchID(), null);
+            assertEquals(webhooks.getWebhooks().get(0).getBulkCopyBatchID(), null);
+            assertEquals(webhooks.getWebhooks().get(0).isIsActive(), null);
+            assertEquals(webhooks.getWebhooks().get(0).getWebhookLogs(), null);
+            assertEquals(webhooks.getWebhooks().get(0).getSeller(), null);
+            assertEquals(webhooks.getWebhooks().get(0).getStore(), null);
+
+        }
+        */
+
     @Test
-    public void testListWebhooks() throws IOException, InterruptedException {
+    public void testSubscribeToWebhook() throws IOException, InterruptedException {
 
-        ListWebhooks webhooks = api.listWebhooks();
+        SubscribeWebhookPayload payload = new SubscribeWebhookPayload();
+        payload.setTarget_url("http://someexamplewebhookurl.com/neworder");
+        payload.setEvent("ORDER_NOTIFY");
+        //etc...
 
-        assertEquals(webhooks.getWebhooks().get(0).isIsLabelAPIHook(), false);
-        assertEquals(webhooks.getWebhooks().get(0).getWebHookID(), 123);
-        assertEquals(webhooks.getWebhooks().get(0).getSellerID(), 100000);
-        assertEquals(webhooks.getWebhooks().get(0).getHookType(), "ITEM_ORDER_NOTIFY");
-        assertEquals(webhooks.getWebhooks().get(0).getMessageFormat(), "Json")
-        assertEquals(webhooks.getWebhooks().get(0).getUrl(), "http://example.endpoint/orders");
-        assertEquals(webhooks.getWebhooks().get(0).getName(), "My Order Webhook");
-        assertEquals(webhooks.getWebhooks().get(0).getBulkCopyBatchID(), null);
-        assertEquals(webhooks.getWebhooks().get(0).getBulkCopyBatchID(), null);
-        assertEquals(webhooks.getWebhooks().get(0).isIsActive(), null);
-        assertEquals(webhooks.getWebhooks().get(0).getWebhookLogs(), null);
-        assertEquals(webhooks.getWebhooks().get(0).getSeller(), null);
-        assertEquals(webhooks.getWebhooks().get(0).getStore(), null);
+        int id = api.subscribeToWebhook(payload);
+
+        assertEquals(id, 123456);
+    }
+
+    @Test
+    public void testUnsubscribeToWebhook() throws IOException, InterruptedException {
+
+        api.unsubscribeToWebhook(123456);
 
     }
-    */
 }

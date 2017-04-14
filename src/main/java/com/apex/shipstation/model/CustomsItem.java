@@ -4,8 +4,8 @@ public class CustomsItem {
 
     private String customsItemId;
     private String description;
-    private int quantity;
-    private float value;
+    private long quantity;
+    private double value;
     private String harmonizedTariffCode;
     private String countryOfOrigin;
 
@@ -25,19 +25,19 @@ public class CustomsItem {
         this.description = description;
     }
 
-    public int getQuantity() {
+    public long getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(long quantity) {
         this.quantity = quantity;
     }
 
-    public float getValue() {
+    public double getValue() {
         return value;
     }
 
-    public void setValue(float value) {
+    public void setValue(double value) {
         this.value = value;
     }
 

@@ -4,7 +4,7 @@ public class SubscribeWebhookPayload {
 
     private String target_url;
     private String event;
-    private int store_id;
+    private long store_id;
     private String friendly_name;
 
     public String getTarget_url() {
@@ -23,11 +23,11 @@ public class SubscribeWebhookPayload {
         this.event = event;
     }
 
-    public int getStore_id() {
+    public long getStore_id() {
         return store_id;
     }
 
-    public void setStore_id(int store_id) {
+    public void setStore_id(long store_id) {
         this.store_id = store_id;
     }
 

@@ -182,15 +182,15 @@ public class API {
         return mapper.readValue(res.readEntity(String.class), Carrier.class);
     }
 
-    /*
-        public List<Package> listPackages(String carrierCode) throws IOException, InterruptedException {
 
-            Response res = GET(apiBaseURL + "/carriers/listpackages?carrierCode=" + carrierCode);
-            return mapper.readValue(res.readEntity(String.class), new TypeReference<List<Package>>() {
-            });
+    public List<com.apex.shipstation.model.Package> listPackages(String carrierCode) throws IOException, InterruptedException {
 
-        }
-    */
+        Response res = GET(apiBaseURL + "/carriers/listpackages?carrierCode=" + carrierCode);
+        return mapper.readValue(res.readEntity(String.class), new TypeReference<List<com.apex.shipstation.model.Package>>() {
+        });
+
+    }
+
     public List<Service> listServices(String carrierCode) throws IOException, InterruptedException {
         Response res = GET(apiBaseURL + "/carriers/listservices?carrierCode=" + carrierCode);
         return mapper.readValue(res.readEntity(String.class), new TypeReference<List<Service>>() {

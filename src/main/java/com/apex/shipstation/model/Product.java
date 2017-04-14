@@ -7,12 +7,12 @@ public class Product {
     private long productId;
     private String sku;
     private String name;
-    private float price;
-    private float defaultCost;
-    private float length;
-    private float width;
-    private float height;
-    private float weightOz;
+    private double price;
+    private double defaultCost;
+    private double length;
+    private double width;
+    private double height;
+    private double weightOz;
     private String internalNotes;
     private String fulfillmentSku;
     private String createDate;
@@ -30,7 +30,7 @@ public class Product {
     private String defaultConfirmation;
     private String defaultIntlConfirmation;
     private String customsDescription;
-    private long customsValue;
+    private double customsValue;
     private String customsTariffNo;
     private String customsCountryCode;
     private boolean noCustoms;
@@ -60,51 +60,51 @@ public class Product {
         this.name = name;
     }
 
-    public float getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
-    public float getDefaultCost() {
+    public double getDefaultCost() {
         return defaultCost;
     }
 
-    public void setDefaultCost(float defaultCost) {
+    public void setDefaultCost(double defaultCost) {
         this.defaultCost = defaultCost;
     }
 
-    public float getLength() {
+    public double getLength() {
         return length;
     }
 
-    public void setLength(float length) {
+    public void setLength(double length) {
         this.length = length;
     }
 
-    public float getWidth() {
+    public double getWidth() {
         return width;
     }
 
-    public void setWidth(float width) {
+    public void setWidth(double width) {
         this.width = width;
     }
 
-    public float getHeight() {
+    public double getHeight() {
         return height;
     }
 
-    public void setHeight(float height) {
+    public void setHeight(double height) {
         this.height = height;
     }
 
-    public float getWeightOz() {
+    public double getWeightOz() {
         return weightOz;
     }
 
-    public void setWeightOz(float weightOz) {
+    public void setWeightOz(double weightOz) {
         this.weightOz = weightOz;
     }
 
@@ -244,11 +244,11 @@ public class Product {
         this.customsDescription = customsDescription;
     }
 
-    public long getCustomsValue() {
+    public double getCustomsValue() {
         return customsValue;
     }
 
-    public void setCustomsValue(long customsValue) {
+    public void setCustomsValue(double customsValue) {
         this.customsValue = customsValue;
     }
 

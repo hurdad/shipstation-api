@@ -12,8 +12,8 @@ public class AdvancedOptions {
     private String customField3;
     private String source;
     private boolean mergedOrSplit;
-    private long[]  mergedIds;
-    private long parentId;
+    private long[] mergedIds;
+    private String parentId;
     private String billToParty;
     private String billToAccount;
     private String billToPostalCode;
@@ -107,11 +107,11 @@ public class AdvancedOptions {
         this.mergedIds = mergedIds;
     }
 
-    public long getParentId() {
+    public String getParentId() {
         return parentId;
     }
 
-    public void setParentId(long parentId) {
+    public void setParentId(String parentId) {
         this.parentId = parentId;
     }
 

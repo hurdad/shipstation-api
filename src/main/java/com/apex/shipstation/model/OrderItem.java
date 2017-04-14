@@ -10,10 +10,10 @@ public class OrderItem {
     private String name;
     private String imageUrl;
     private Weight Weight;
-    private float quantity;
-    private float unitPrice;
-    private float taxAmount;
-    private float shippingAmount;
+    private double quantity;
+    private double unitPrice;
+    private double taxAmount;
+    private double shippingAmount;
     private String warehouseLocation;
     private List<ItemOption> options;
     private long productId;
@@ -71,35 +71,35 @@ public class OrderItem {
         Weight = weight;
     }
 
-    public float getQuantity() {
+    public double getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(float quantity) {
+    public void setQuantity(double quantity) {
         this.quantity = quantity;
     }
 
-    public float getUnitPrice() {
+    public double getUnitPrice() {
         return unitPrice;
     }
 
-    public void setUnitPrice(float unitPrice) {
+    public void setUnitPrice(double unitPrice) {
         this.unitPrice = unitPrice;
     }
 
-    public float getTaxAmount() {
+    public double getTaxAmount() {
         return taxAmount;
     }
 
-    public void setTaxAmount(float taxAmount) {
+    public void setTaxAmount(double taxAmount) {
         this.taxAmount = taxAmount;
     }
 
-    public float getShippingAmount() {
+    public double getShippingAmount() {
         return shippingAmount;
     }
 
-    public void setShippingAmount(float shippingAmount) {
+    public void setShippingAmount(double shippingAmount) {
         this.shippingAmount = shippingAmount;
     }
 

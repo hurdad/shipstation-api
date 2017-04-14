@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Customer {
 
-    private double customerId;
+    private long customerId;
     private String createDate;
     private String modifyDate;
     private String name;
@@ -18,15 +18,14 @@ public class Customer {
     private String phone;
     private String email;
     private String addressVerified;
+    private List<MarketplaceUsername> marketplaceUsernames;
+    private List<Tag> tags;
 
-    private  List<MarketplaceUsername> marketplaceUsernames;
-    private  List<Tag> tags;
-
-    public double getCustomerId() {
+    public long getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(double customerId) {
+    public void setCustomerId(long customerId) {
         this.customerId = customerId;
     }
 

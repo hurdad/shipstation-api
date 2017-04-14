@@ -5,7 +5,7 @@ public class OrderResponse {
     private long orderId;
     private String orderNumber;
     private String orderKey;
-    private  boolean success;
+    private boolean success;
     private String errorMessage;
 
     public long getOrderId() {
