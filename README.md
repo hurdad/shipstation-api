@@ -27,6 +27,7 @@ $ mvn package
 ## Usage
 ```
 # See APITest.java for examples of each API call
+import com.apex.shipstation.API;
 API api = new API("https://ssapi.shipstation.com", "api_key", "api_secret");
 Order order = api.getOrder(123456789);
 System.out.println(order.getOrderNumber());
