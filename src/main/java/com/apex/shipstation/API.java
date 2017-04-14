@@ -413,11 +413,11 @@ public class API {
         return mapper.readValue(res.readEntity(String.class), SuccessResponse.class);
     }
 
-    /*
-        listUsers() {
-
-        }
-    */
+    public List<User> listUsers(boolean showInactive) throws IOException, InterruptedException {
+        Response res = GET(apiBaseURL + "/users?showInactive=" + (showInactive ? "true" : "false"));
+        return mapper.readValue(res.readEntity(String.class), new TypeReference<List<User>>() {
+        });
+    }
 
     public Warehouse getWarehouse(long warehouseId) throws IOException, InterruptedException {
         Response res = GET(apiBaseURL + "/warehouses/" + warehouseId);
@@ -444,11 +444,12 @@ public class API {
         });
     }
 
+/* Doesnt work due to uppercase json keys from api
     public ListWebhooks listWebhooks() throws IOException, InterruptedException {
         Response res = GET(apiBaseURL + "/webhooks");
         return mapper.readValue(res.readEntity(String.class), ListWebhooks.class);
     }
-
+*/
     public int subscribeToWebhook(SubscribeWebhookPayload subscribeWebhookPayload) throws IOException, InterruptedException {
         String JSON = mapper.writeValueAsString(subscribeWebhookPayload);
         Entity<String> payload = Entity.json(JSON);

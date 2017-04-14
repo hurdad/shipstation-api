@@ -1,10 +1,7 @@
 package com.apex.shipstation;
 
 import com.apex.shipstation.model.*;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -1127,6 +1124,17 @@ public class APITest {
 
     }
 
+    /* Doesnt work correctly with mock api - should return array of users, not a single user */
+    @Ignore
+    @Test
+    public void testListUsers() throws IOException, InterruptedException {
+
+        List<User> users = api.listUsers(true);
+
+        assertEquals(users.get(0).getUserId(), "123456AB-ab12-3c4d-5e67-89f1abc1defa");
+    }
+
+
     @Test
     public void testGetWarehouse() throws IOException, InterruptedException {
 
@@ -1285,28 +1293,30 @@ public class APITest {
 
     }
 
-    /*
-        @Test
-        public void testListWebhooks() throws IOException, InterruptedException {
+    /* Doesnt work due to uppercase json keys from api*/
+    @Ignore
+    @Test
+    public void testListWebhooks() throws IOException, InterruptedException {
 
-            ListWebhooks webhooks = api.listWebhooks();
+        /*
+         ListWebhooks webhooks = api.listWebhooks();
 
-            assertEquals(webhooks.getWebhooks().get(0).isIsLabelAPIHook(), false);
-            assertEquals(webhooks.getWebhooks().get(0).getWebHookID(), 123);
-            assertEquals(webhooks.getWebhooks().get(0).getSellerID(), 100000);
-            assertEquals(webhooks.getWebhooks().get(0).getHookType(), "ITEM_ORDER_NOTIFY");
-            assertEquals(webhooks.getWebhooks().get(0).getMessageFormat(), "Json")
-            assertEquals(webhooks.getWebhooks().get(0).getUrl(), "http://example.endpoint/orders");
-            assertEquals(webhooks.getWebhooks().get(0).getName(), "My Order Webhook");
-            assertEquals(webhooks.getWebhooks().get(0).getBulkCopyBatchID(), null);
-            assertEquals(webhooks.getWebhooks().get(0).getBulkCopyBatchID(), null);
-            assertEquals(webhooks.getWebhooks().get(0).isIsActive(), null);
-            assertEquals(webhooks.getWebhooks().get(0).getWebhookLogs(), null);
-            assertEquals(webhooks.getWebhooks().get(0).getSeller(), null);
-            assertEquals(webhooks.getWebhooks().get(0).getStore(), null);
+        assertEquals(webhooks.getWebhooks().get(0).isIsLabelAPIHook(), false);
+        assertEquals(webhooks.getWebhooks().get(0).getWebHookID(), 123);
+        assertEquals(webhooks.getWebhooks().get(0).getSellerID(), 100000);
+        assertEquals(webhooks.getWebhooks().get(0).getHookType(), "ITEM_ORDER_NOTIFY");
+        assertEquals(webhooks.getWebhooks().get(0).getMessageFormat(), "Json");
+        assertEquals(webhooks.getWebhooks().get(0).getUrl(), "http://example.endpoint/orders");
+        assertEquals(webhooks.getWebhooks().get(0).getName(), "My Order Webhook");
+        assertEquals(webhooks.getWebhooks().get(0).getBulkCopyBatchID(), null);
+        assertEquals(webhooks.getWebhooks().get(0).getBulkCopyBatchID(), null);
+        assertEquals(webhooks.getWebhooks().get(0).isIsActive(), null);
+        assertEquals(webhooks.getWebhooks().get(0).getWebhookLogs(), null);
+        assertEquals(webhooks.getWebhooks().get(0).getSeller(), null);
+        assertEquals(webhooks.getWebhooks().get(0).getStore(), null);
+*/
+    }
 
-        }
-        */
 
     @Test
     public void testSubscribeToWebhook() throws IOException, InterruptedException {

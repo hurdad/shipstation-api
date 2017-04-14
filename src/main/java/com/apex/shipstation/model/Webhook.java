@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Webhook {
 
-    private boolean IsLabelAPIHook;
+    private boolean IsIsLabelAPIHook;
     private long WebHookID;
     private long SellerID;
     private long StoreID;
@@ -20,11 +20,11 @@ public class Webhook {
     private String Store;
 
     public boolean isIsLabelAPIHook() {
-        return IsLabelAPIHook;
+        return IsIsLabelAPIHook;
     }
 
-    public void setIsLabelAPIHook(boolean labelAPIHook) {
-        IsLabelAPIHook = labelAPIHook;
+    public void setIsLabelAPIHook(boolean isLabelAPIHook) {
+        IsIsLabelAPIHook = isLabelAPIHook;
     }
 
     public long getWebHookID() {
@@ -99,11 +99,11 @@ public class Webhook {
         BulkCopyRecordID = bulkCopyRecordID;
     }
 
-    public boolean isIsActive() {
+    public boolean isActive() {
         return Active;
     }
 
-    public void setIsActive(boolean active) {
+    public void setActive(boolean active) {
         Active = active;
     }
 
