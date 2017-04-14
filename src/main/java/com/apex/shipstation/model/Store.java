@@ -1,24 +1,27 @@
 package com.apex.shipstation.model;
 
+import java.util.List;
+
 public class Store {
 
-    private long  storeId;
+    private long storeId;
     private String storeName;
     private long marketplaceId;
-    private  String marketplaceName;
-    private  String accountName;
-    private  boolean email;
-    private  String integrationUrl;
-    private  boolean active;
-    private  String companyName;
-    private  String phone;
-    private  String publicEmail;
-    private  String website;
-    private  String refreshDate;
+    private String marketplaceName;
+    private String accountName;
+    private String email;
+    private String integrationUrl;
+    private boolean active;
+    private String companyName;
+    private String phone;
+    private String publicEmail;
+    private String website;
+    private String refreshDate;
     private String lastRefreshAttempt;
-    private  String createDate;
-    private  String modifyDate;
+    private String createDate;
+    private String modifyDate;
     private boolean autoRefresh;
+    private List<StatusMapping> statusMappings;
 
     public long getStoreId() {
         return storeId;
@@ -60,11 +63,11 @@ public class Store {
         this.accountName = accountName;
     }
 
-    public boolean isEmail() {
+    public String getEmail() {
         return email;
     }
 
-    public void setEmail(boolean email) {
+    public void setEmail(String email) {
         this.email = email;
     }
 
@@ -154,5 +157,13 @@ public class Store {
 
     public void setAutoRefresh(boolean autoRefresh) {
         this.autoRefresh = autoRefresh;
+    }
+
+    public List<StatusMapping> getStatusMappings() {
+        return statusMappings;
+    }
+
+    public void setStatusMappings(List<StatusMapping> statusMappings) {
+        this.statusMappings = statusMappings;
     }
 }

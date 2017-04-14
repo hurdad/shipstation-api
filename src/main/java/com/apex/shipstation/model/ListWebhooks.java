@@ -4,5 +4,13 @@ import java.util.List;
 
 public class ListWebhooks {
 
-    List<Webhook> webhooks;
+    private List<Webhook> webhooks;
+
+    public List<Webhook> getWebhooks() {
+        return webhooks;
+    }
+
+    public void setWebhooks(List<Webhook> webhooks) {
+        this.webhooks = webhooks;
+    }
 }

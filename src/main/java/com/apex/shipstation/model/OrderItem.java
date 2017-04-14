@@ -6,7 +6,7 @@ public class OrderItem {
 
     private long orderItemId;
     private String lineItemKey;
-    private  String sku;
+    private String sku;
     private String name;
     private String imageUrl;
     private Weight Weight;
@@ -14,13 +14,13 @@ public class OrderItem {
     private float unitPrice;
     private float taxAmount;
     private float shippingAmount;
-    private  String warehouseLocation;
-    private  List<ItemOption> options;
+    private String warehouseLocation;
+    private List<ItemOption> options;
     private long productId;
     private String fulfillmentSku;
     private boolean adjustment;
-    private  String upc;
-    private  String createDate;
+    private String upc;
+    private String createDate;
     private String modifyDate;
 
     public long getOrderItemId() {

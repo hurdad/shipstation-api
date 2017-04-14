@@ -2,12 +2,12 @@ package com.apex.shipstation.model;
 
 public class Warehouse {
 
-    long warehouseId;
-    String warehouseName;
-    Address originAddress;
-    Address returnAddress;
-    String createDate;
-    Boolean isDefault;
+    private long warehouseId;
+    private String warehouseName;
+    private Address originAddress;
+    private Address returnAddress;
+    private String createDate;
+    private boolean isDefault;
 
     public long getWarehouseId() {
         return warehouseId;
@@ -49,11 +49,11 @@ public class Warehouse {
         this.createDate = createDate;
     }
 
-    public Boolean getDefault() {
+    public boolean isIsDefault() {
         return isDefault;
     }
 
-    public void setDefault(Boolean aDefault) {
+    public void setIsDefault(boolean aDefault) {
         isDefault = aDefault;
     }
 }

@@ -1,6 +1,5 @@
 package com.apex.shipstation.model;
 
-
 public class Rate {
 
     private String serviceName;

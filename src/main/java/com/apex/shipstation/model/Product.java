@@ -1,5 +1,7 @@
 package com.apex.shipstation.model;
 
+import java.util.List;
+
 public class Product {
 
     private long productId;
@@ -32,7 +34,7 @@ public class Product {
     private String customsTariffNo;
     private String customsCountryCode;
     private boolean noCustoms;
-    private ProductTag tags;
+    private List<ProductTag> tags;
 
     public long getProductId() {
         return productId;
@@ -274,11 +276,11 @@ public class Product {
         this.noCustoms = noCustoms;
     }
 
-    public ProductTag getTags() {
+    public List<ProductTag> getTags() {
         return tags;
     }
 
-    public void setTags(ProductTag tags) {
+    public void setTags(List<ProductTag> tags) {
         this.tags = tags;
     }
 }

@@ -1,6 +1,7 @@
 package com.apex.shipstation.model;
 
 public class ItemOption {
+
     private String name;
     private String value;
 

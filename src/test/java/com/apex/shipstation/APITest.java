@@ -727,7 +727,7 @@ public class APITest {
     @Test
     public void testnRestoreOrderFromOnHold() throws IOException, InterruptedException {
 
-        SuccessResponse response = api.restoreOrderFromOnHold( 1234567);
+        SuccessResponse response = api.restoreOrderFromOnHold(1234567);
         assertEquals(response.isSuccess(), true);
         assertEquals(response.getMessage(), "The requested order has been restored");
 
@@ -746,5 +746,561 @@ public class APITest {
 
     }
 
+    @Test
+    public void testGetProduct() throws IOException, InterruptedException {
 
+        Product product = api.getProduct(12345678);
+
+        assertEquals(product.getProductId(), 12345678);
+        assertEquals(product.getSku(), "1004");
+        assertEquals(product.getName(), "Coffee Mug");
+        assertEquals(product.getPrice(), 26, 0.01);
+        assertEquals(product.getDefaultCost(), 0, 0.01);
+        assertEquals(product.getLength(), 3, 0.01);
+        assertEquals(product.getWidth(), 3, 0.01);
+        assertEquals(product.getHeight(), 3, 0.01);
+        assertEquals(product.getWeightOz(), 26, 0.01);
+        assertEquals(product.getInternalNotes(), null);
+        assertEquals(product.getFulfillmentSku(), "F1004");
+        assertEquals(product.getCreateDate(), "2014-09-04T09:18:01.293");
+        assertEquals(product.getModifyDate(), "2014-09-18T12:38:43.893");
+        assertEquals(product.isActive(), true);
+        assertEquals(product.getProductCategory().getCategoryId(), 9999);
+        assertEquals(product.getProductCategory().getName(), "Door Closers");
+        assertEquals(product.getProductType(), null);
+        assertEquals(product.getWarehouseLocation(), "Bin 22");
+        assertEquals(product.getDefaultCarrierCode(), "fedex");
+        assertEquals(product.getDefaultServiceCode(), "fedex_home_delivery");
+        assertEquals(product.getDefaultPackageCode(), "package");
+        assertEquals(product.getDefaultIntlCarrierCode(), "ups");
+        assertEquals(product.getDefaultIntlServiceCode(), "ups_worldwide_saver");
+        assertEquals(product.getDefaultIntlPackageCode(), "package");
+        assertEquals(product.getDefaultConfirmation(), "direct_signature");
+        assertEquals(product.getDefaultIntlConfirmation(), "adult_signature");
+        assertEquals(product.getCustomsDescription(), null);
+        //  assertEquals(product.getCustomsValue(), null);
+        assertEquals(product.getCustomsCountryCode(), null);
+//        assertEquals(product.isNoCustoms(), null);
+        assertEquals(product.getTags().get(0).getTagId(), 9180);
+        assertEquals(product.getTags().get(0).getName(), "APItest");
+
+    }
+
+    @Test
+    public void testUpdateProduct() throws IOException, InterruptedException {
+
+        Product product = new Product();
+        product.setProductId(123456789);
+        product.setName("Beautiful");
+
+        SuccessResponse response = api.updateProduct(product);
+        assertEquals(response.isSuccess(), true);
+        assertEquals(response.getMessage(), "The requested product has been updated");
+
+    }
+
+    @Test
+    public void testListProducts() throws IOException, InterruptedException {
+
+        ListProducts listProducts = api.listProducts();
+
+        Product product = listProducts.getProducts().get(0);
+
+        assertEquals(product.getProductId(), 7854008);
+        assertEquals(product.getSku(), "1004");
+        assertEquals(product.getName(), "Coffee Mug");
+        assertEquals(product.getPrice(), 26, 0.01);
+        assertEquals(product.getDefaultCost(), 0, 0.01);
+        assertEquals(product.getLength(), 3, 0.01);
+        assertEquals(product.getWidth(), 3, 0.01);
+        assertEquals(product.getHeight(), 3, 0.01);
+        assertEquals(product.getWeightOz(), 26, 0.01);
+        assertEquals(product.getInternalNotes(), null);
+        assertEquals(product.getFulfillmentSku(), "F1004");
+        assertEquals(product.getCreateDate(), "2014-09-04T09:18:01.293");
+        assertEquals(product.getModifyDate(), "2014-09-18T12:38:43.893");
+        assertEquals(product.isActive(), true);
+        assertEquals(product.getProductCategory().getCategoryId(), 9999);
+        assertEquals(product.getProductCategory().getName(), "Door Closers");
+        assertEquals(product.getProductType(), null);
+        assertEquals(product.getWarehouseLocation(), "Bin 22");
+        assertEquals(product.getDefaultCarrierCode(), "fedex");
+        assertEquals(product.getDefaultServiceCode(), "fedex_home_delivery");
+        assertEquals(product.getDefaultPackageCode(), "package");
+        assertEquals(product.getDefaultIntlCarrierCode(), "ups");
+        assertEquals(product.getDefaultIntlServiceCode(), "ups_worldwide_saver");
+        assertEquals(product.getDefaultIntlPackageCode(), "package");
+        assertEquals(product.getDefaultConfirmation(), "direct_signature");
+        assertEquals(product.getDefaultIntlConfirmation(), "adult_signature");
+        assertEquals(product.getCustomsDescription(), null);
+        //       assertEquals(product.getCustomsValue(), null);
+        assertEquals(product.getCustomsCountryCode(), null);
+//        assertEquals(product.isNoCustoms(), null);
+        assertEquals(product.getTags().get(0).getTagId(), 9180);
+        assertEquals(product.getTags().get(0).getName(), "APItest");
+
+        assertEquals(listProducts.getTotal(), 2);
+        assertEquals(listProducts.getPage(), 1);
+        assertEquals(listProducts.getPages(), 0);
+
+    }
+
+    @Test
+    public void testListShipments() throws IOException, InterruptedException {
+
+        ListShipments listShipments = api.listShipments();
+        Shipment shipment = listShipments.getShipments().get(0);
+
+        assertEquals(shipment.getShipmentId(), 33974374);
+        assertEquals(shipment.getOrderId(), 43945660);
+        assertEquals(shipment.getUserId(), "123456AB-ab12-3c4d-5e67-89f1abc1defa");
+        assertEquals(shipment.getOrderNumber(), "100038-1");
+        assertEquals(shipment.getCreateDate(), "2014-10-03T06:51:33.6270000");
+        assertEquals(shipment.getShipDate(), "2014-10-03");
+        assertEquals(shipment.getShipmentCost(), 1.93, 0.01);
+        assertEquals(shipment.getInsuranceCost(), 0.0, 0.01);
+        assertEquals(shipment.getTrackingNumber(), "9400111899561704681189");
+        assertEquals(shipment.isReturnLabel(), false);
+        assertEquals(shipment.getBatchNumber(), "100301");
+        assertEquals(shipment.getCarrierCode(), "stamps_com");
+        assertEquals(shipment.getServiceCode(), "usps_first_class_mail");
+        assertEquals(shipment.getPackageCode(), "package");
+        assertEquals(shipment.getConfirmation(), "delivery");
+        assertEquals(shipment.getWarehouseId(), 16079);
+        assertEquals(shipment.isVoided(), false);
+        assertEquals(shipment.getVoidDate(), null);
+        assertEquals(shipment.isMarketplaceNotified(), true);
+        assertEquals(shipment.getNotifyErrorMessage(), null);
+        assertEquals(shipment.getShipTo().getName(), "Yoda");
+        assertEquals(shipment.getShipTo().getCompany(), "");
+        assertEquals(shipment.getShipTo().getStreet1(), "12223 LOWDEN LN");
+        assertEquals(shipment.getShipTo().getStreet2(), "");
+        assertEquals(shipment.getShipTo().getStreet3(), null);
+        assertEquals(shipment.getShipTo().getCity(), "MANCHACA");
+        assertEquals(shipment.getShipTo().getState(), "TX");
+        assertEquals(shipment.getShipTo().getPostalCode(), "78652-3602");
+        assertEquals(shipment.getShipTo().getCountry(), "US");
+        assertEquals(shipment.getShipTo().getPhone(), "2101235544");
+//        assertEquals(shipment.getShipTo().isResidential(), null);
+        assertEquals(shipment.getWeight().getValue(), 1);
+        assertEquals(shipment.getWeight().getUnits(), "ounces");
+        assertEquals(shipment.getDimensions(), null);
+        assertEquals(shipment.getInsuranceOptions().getProvider(), null);
+        assertEquals(shipment.getInsuranceOptions().getProvider(), null);
+        assertEquals(shipment.getInsuranceOptions().isInsureShipment(), false);
+        assertEquals(shipment.getInsuranceOptions().getInsuredValue(), 0, 0.01);
+        assertEquals(shipment.getAdvancedOptions(), null);
+        assertEquals(shipment.getShipmentItems().get(0).getOrderItemId(), 56568665);
+        assertEquals(shipment.getShipmentItems().get(0).getLineItemKey(), null);
+        assertEquals(shipment.getShipmentItems().get(0).getSku(), "SQ3785739");
+        assertEquals(shipment.getShipmentItems().get(0).getName(), "Potato Kitten -");
+        assertEquals(shipment.getShipmentItems().get(0).getImageUrl(), null);
+        assertEquals(shipment.getShipmentItems().get(0).getWeight(), null);
+        assertEquals(shipment.getShipmentItems().get(0).getQuantity(), 1, 0.01);
+        assertEquals(shipment.getShipmentItems().get(0).getUnitPrice(), 1, 0.01);
+        assertEquals(shipment.getShipmentItems().get(0).getWarehouseLocation(), null);
+        assertEquals(shipment.getShipmentItems().get(0).getOptions(), null);
+        assertEquals(shipment.getShipmentItems().get(0).getProductId(), 7565777);
+        assertEquals(shipment.getShipmentItems().get(0).getFulfillmentSku(), null);
+        assertEquals(shipment.getLabelData(), null);
+        assertEquals(shipment.getFormData(), null);
+
+    }
+
+    @Test
+    public void testCreateShipmentLabel() throws IOException, InterruptedException {
+
+        ShipmentLabelPayload shipmentLabelPayload = new ShipmentLabelPayload();
+        shipmentLabelPayload.setCarrierCode("fedex");
+        shipmentLabelPayload.setServiceCode("fedex_ground");
+        shipmentLabelPayload.setPackageCode("package");
+        shipmentLabelPayload.setConfirmation("delivery");
+        //etc...
+
+        Shipment shipment = api.createShipmentLabel(shipmentLabelPayload);
+
+        assertEquals(shipment.getShipmentId(), 123456789);
+//        assertEquals(shipment.getOrderId(), null);
+        assertEquals(shipment.getUserId(), null);
+        assertEquals(shipment.getOrderNumber(), null);
+        assertEquals(shipment.getCreateDate(), "2016-04-03T12:11:36.8630000");
+        assertEquals(shipment.getShipDate(), "2016-04-03");
+        assertEquals(shipment.getShipmentCost(), 9.06, 0.01);
+        assertEquals(shipment.getInsuranceCost(), 0, 0.01);
+        assertEquals(shipment.getTrackingNumber(), "782390443992");
+        assertEquals(shipment.isReturnLabel(), false);
+        assertEquals(shipment.getBatchNumber(), null);
+        assertEquals(shipment.getCarrierCode(), "fedex");
+        assertEquals(shipment.getServiceCode(), "fedex_ground");
+        assertEquals(shipment.getPackageCode(), "package");
+        assertEquals(shipment.getConfirmation(), "delivery");
+//        assertEquals(shipment.getWarehouseId(), null);
+        assertEquals(shipment.isVoided(), false);
+        assertEquals(shipment.getVoidDate(), null);
+//        assertEquals(shipment.isMarketplaceNotified(), true);
+        assertEquals(shipment.getNotifyErrorMessage(), null);
+        assertEquals(shipment.getShipTo(), null);
+        assertEquals(shipment.getWeight(), null);
+        assertEquals(shipment.getDimensions(), null);
+        assertEquals(shipment.getInsuranceOptions(), null);
+        assertEquals(shipment.getAdvancedOptions(), null);
+        assertEquals(shipment.getShipmentItems(), null);
+        assertEquals(shipment.getLabelData(), "JVBERi0xLjQKJeLjz9MKMiAwIG9iago8PC9MZW5ndGggNjIvRmlsdGVyL0ZsYXRlRGVjb2RlPj5zdHJlYW0KeJwr5HIK4TI2U...");
+        assertEquals(shipment.getFormData(), null);
+
+    }
+
+    @Test
+    public void testGetRates() throws IOException, InterruptedException {
+
+        RatePayload rate = new RatePayload();
+        rate.setCarrierCode("fedex");
+        rate.setFromPostalCode("78703");
+        rate.setToState("DC");
+        rate.setToCountry("US");
+        rate.setToPostalCode("20500");
+        //etc
+
+        List<Rate> rates = api.getRates(rate);
+
+        assertEquals(rates.get(0).getServiceName(), "FedEx First Overnight®");
+        assertEquals(rates.get(0).getServiceCode(), "fedex_first_overnight");
+        assertEquals(rates.get(0).getShipmentCost(), 87.8, 0.01);
+        assertEquals(rates.get(0).getOtherCost(), 2.63, 0.001);
+
+        assertEquals(rates.get(1).getServiceName(), "FedEx Priority Overnight®");
+        assertEquals(rates.get(1).getServiceCode(), "fedex_priority_overnight");
+        assertEquals(rates.get(1).getShipmentCost(), 50.23, 0.01);
+        assertEquals(rates.get(1).getOtherCost(), 1.51, 0.001);
+
+    }
+
+    @Test
+    public void testVoidLabel() throws IOException, InterruptedException {
+
+        VoidLabelResponse response = api.voidLabel(12345);
+        assertEquals(response.isApproved(), true);
+        assertEquals(response.getMessage(), "Label voided successfully");
+
+    }
+
+    @Test
+    public void testGetStore() throws IOException, InterruptedException {
+
+        Store store = api.getStore(12345);
+
+        assertEquals(store.getStoreId(), 12345);
+        assertEquals(store.getStoreName(), "WooCommerce Store");
+        assertEquals(store.getMarketplaceId(), 36);
+        assertEquals(store.getMarketplaceName(), "WooCommerce");
+        assertEquals(store.getAccountName(), null);
+        assertEquals(store.getEmail(), null);
+        assertEquals(store.getIntegrationUrl(), "http://shipstation-test.wpengine.com");
+        assertEquals(store.isActive(), true);
+        assertEquals(store.getCompanyName(), "");
+        assertEquals(store.getPhone(), "");
+        assertEquals(store.getPublicEmail(), "");
+        assertEquals(store.getWebsite(), "");
+        assertEquals(store.getRefreshDate(), "2014-12-16T17:47:05.457");
+        assertEquals(store.getLastRefreshAttempt(), "2014-12-16T09:47:05.457");
+        assertEquals(store.getCreateDate(), "2014-11-06T15:21:13.223");
+        assertEquals(store.isAutoRefresh(), true);
+        assertEquals(store.getStatusMappings().get(0).getOrderStatus(), "awaiting_payment");
+        assertEquals(store.getStatusMappings().get(0).getStatusKey(), "Pending");
+
+    }
+
+    @Test
+    public void testUpdateStore() throws IOException, InterruptedException {
+
+        Store storePayload = new Store();
+        storePayload.setStoreId(12345);
+        storePayload.setStoreName("WooCommerce Store");
+        //etc
+
+        Store store = api.updateStore(storePayload);
+
+        assertEquals(store.getStoreId(), 12345);
+        assertEquals(store.getStoreName(), "WooCommerce Store");
+        assertEquals(store.getMarketplaceId(), 36);
+        assertEquals(store.getMarketplaceName(), "WooCommerce");
+        assertEquals(store.getAccountName(), null);
+        assertEquals(store.getEmail(), null);
+        assertEquals(store.getIntegrationUrl(), "http://shipstation-test.wpengine.com");
+        assertEquals(store.isActive(), true);
+        assertEquals(store.getCompanyName(), "");
+        assertEquals(store.getPhone(), "");
+        assertEquals(store.getPublicEmail(), "");
+        assertEquals(store.getWebsite(), "");
+        assertEquals(store.getRefreshDate(), "2014-12-16T17:47:05.457");
+        assertEquals(store.getLastRefreshAttempt(), "2014-12-16T09:47:05.457");
+        assertEquals(store.getCreateDate(), "2014-11-06T15:21:13.223");
+        assertEquals(store.isAutoRefresh(), true);
+        assertEquals(store.getStatusMappings().get(0).getOrderStatus(), "awaiting_payment");
+        assertEquals(store.getStatusMappings().get(0).getStatusKey(), "Pending");
+
+    }
+
+    @Test
+    public void testGetStoreRefreshStatus() throws IOException, InterruptedException {
+
+        StoreRefreshStatusResponse storeRefreshStatusResponse = api.getStoreRefreshStatus(12345);
+
+        assertEquals(storeRefreshStatusResponse.getStoreId(), 12345);
+        assertEquals(storeRefreshStatusResponse.getRefreshStatusId(), 2);
+        assertEquals(storeRefreshStatusResponse.getRefreshStatus(), "Updating orders");
+        assertEquals(storeRefreshStatusResponse.getLastRefreshAttempt(), "8-13-2014");
+        assertEquals(storeRefreshStatusResponse.getRefreshDate(), "8-13-2014");
+
+    }
+
+
+    @Test
+    public void testRefreshStore() throws IOException, InterruptedException {
+
+        SuccessResponse response = api.refreshStore(12345);
+
+        assertEquals(response.isSuccess(), true);
+        assertEquals(response.getMessage(), "A store refresh has been initiated for Store ID 12345");
+
+    }
+
+    @Test
+    public void testListStores() throws IOException, InterruptedException {
+
+        List<Store> stores = api.listStores(false);
+
+        assertEquals(stores.get(0).getStoreId(), 22766);
+        assertEquals(stores.get(0).getStoreName(), "ShipStation Manual Store");
+        assertEquals(stores.get(0).getMarketplaceId(), 0);
+        assertEquals(stores.get(0).getMarketplaceName(), "ShipStation");
+        assertEquals(stores.get(0).getAccountName(), null);
+        assertEquals(stores.get(0).getEmail(), null);
+        assertEquals(stores.get(0).getIntegrationUrl(), null);
+        assertEquals(stores.get(0).isActive(), true);
+        assertEquals(stores.get(0).getPhone(), "");
+        assertEquals(stores.get(0).getPublicEmail(), "testemail@email.com");
+        assertEquals(stores.get(0).getWebsite(), "");
+        assertEquals(stores.get(0).getRefreshDate(), "2014-12-03T11:46:11.283");
+        assertEquals(stores.get(0).getLastRefreshAttempt(), "2014-12-03T11:46:53.433");
+        assertEquals(stores.get(0).getCreateDate(), "2014-07-25T11:05:55.307");
+        assertEquals(stores.get(0).getModifyDate(), "2014-11-12T08:45:20.55");
+        assertEquals(stores.get(0).isAutoRefresh(), false);
+
+    }
+
+    @Test
+    public void testListMarketplaces() throws IOException, InterruptedException {
+
+        List<Marketplace> marketplaces = api.listMarketplaces();
+
+        assertEquals(marketplaces.get(0).getName(), "3DCart");
+        assertEquals(marketplaces.get(0).getMarketplaceId(), 23);
+        assertEquals(marketplaces.get(0).isCanRefresh(), true);
+        assertEquals(marketplaces.get(0).isSupportsCustomMappings(), true);
+        assertEquals(marketplaces.get(0).isSupportsCustomStatuses(), false);
+        assertEquals(marketplaces.get(0).isCanConfirmShipments(), true);
+
+    }
+
+    @Test
+    public void testDeactivateStore() throws IOException, InterruptedException {
+
+        SuccessResponse response = api.deactivateStore(12345);
+
+        assertEquals(response.isSuccess(), true);
+        assertEquals(response.getMessage(), "The requested store has been reactivated.");
+
+    }
+
+    @Test
+    public void testReactivateStore() throws IOException, InterruptedException {
+
+        SuccessResponse response = api.reactivateStore(12345);
+
+        assertEquals(response.isSuccess(), true);
+        assertEquals(response.getMessage(), "The requested store has been reactivated.");
+
+    }
+
+    @Test
+    public void testGetWarehouse() throws IOException, InterruptedException {
+
+        Warehouse warehouse = api.getWarehouse(12345);
+
+        assertEquals(warehouse.getWarehouseId(), 12345);
+        assertEquals(warehouse.getWarehouseName(), "API Ship From Location");
+        assertEquals(warehouse.getOriginAddress().getName(), "API Warehouse");
+        assertEquals(warehouse.getOriginAddress().getCompany(), "ShipStation");
+        assertEquals(warehouse.getOriginAddress().getStreet1(), "2815 Exposition Blvd");
+        assertEquals(warehouse.getOriginAddress().getStreet2(), null);
+        assertEquals(warehouse.getOriginAddress().getStreet3(), null);
+        assertEquals(warehouse.getOriginAddress().getCity(), "Austin");
+        assertEquals(warehouse.getOriginAddress().getState(), "TX");
+        assertEquals(warehouse.getOriginAddress().getPostalCode(), "78703");
+        assertEquals(warehouse.getOriginAddress().getCountry(), "US");
+        assertEquals(warehouse.getOriginAddress().getPhone(), "512-555-5555");
+        assertEquals(warehouse.getOriginAddress().isResidential(), true);
+        assertEquals(warehouse.getOriginAddress().getAddressVerified(), null);
+
+        assertEquals(warehouse.getReturnAddress().getName(), "API Ship From Location");
+        assertEquals(warehouse.getReturnAddress().getCompany(), "ShipStation");
+        assertEquals(warehouse.getReturnAddress().getStreet1(), "2815 Exposition Blvd");
+        assertEquals(warehouse.getReturnAddress().getStreet2(), null);
+        assertEquals(warehouse.getReturnAddress().getStreet3(), null);
+        assertEquals(warehouse.getReturnAddress().getCity(), "Austin");
+        assertEquals(warehouse.getReturnAddress().getState(), "TX");
+        assertEquals(warehouse.getReturnAddress().getPostalCode(), "78703");
+        assertEquals(warehouse.getReturnAddress().getCountry(), "US");
+        assertEquals(warehouse.getReturnAddress().getPhone(), "512-555-5555");
+    //    assertEquals(warehouse.getReturnAddress().isResidential(), true);
+        assertEquals(warehouse.getReturnAddress().getAddressVerified(), null);
+
+        assertEquals(warehouse.getCreateDate(), "2015-07-02T08:38:31.4870000");
+        assertEquals(warehouse.isIsDefault(), true);
+
+    }
+
+    @Test
+    public void testUpdateWarehouse() throws IOException, InterruptedException {
+
+        Warehouse warehousePayload = new Warehouse();
+        warehousePayload.setWarehouseId(12345);
+        warehousePayload.setWarehouseName("API Ship From Location");
+        Warehouse warehouse = api.updateWarehouse(warehousePayload);
+
+        assertEquals(warehouse.getWarehouseId(), 12345);
+        assertEquals(warehouse.getWarehouseName(), "API Ship From Location");
+        assertEquals(warehouse.getOriginAddress().getName(), "API Warehouse");
+        assertEquals(warehouse.getOriginAddress().getCompany(), "ShipStation");
+        assertEquals(warehouse.getOriginAddress().getStreet1(), "2815 Exposition Blvd");
+        assertEquals(warehouse.getOriginAddress().getStreet2(), null);
+        assertEquals(warehouse.getOriginAddress().getStreet3(), null);
+        assertEquals(warehouse.getOriginAddress().getCity(), "Austin");
+        assertEquals(warehouse.getOriginAddress().getState(), "TX");
+        assertEquals(warehouse.getOriginAddress().getPostalCode(), "78703");
+        assertEquals(warehouse.getOriginAddress().getCountry(), "US");
+        assertEquals(warehouse.getOriginAddress().getPhone(), "512-555-5555");
+        assertEquals(warehouse.getOriginAddress().isResidential(), true);
+        assertEquals(warehouse.getOriginAddress().getAddressVerified(), null);
+
+        assertEquals(warehouse.getReturnAddress().getName(), "API Ship From Location");
+        assertEquals(warehouse.getReturnAddress().getCompany(), "ShipStation");
+        assertEquals(warehouse.getReturnAddress().getStreet1(), "2815 Exposition Blvd");
+        assertEquals(warehouse.getReturnAddress().getStreet2(), null);
+        assertEquals(warehouse.getReturnAddress().getStreet3(), null);
+        assertEquals(warehouse.getReturnAddress().getCity(), "Austin");
+        assertEquals(warehouse.getReturnAddress().getState(), "TX");
+        assertEquals(warehouse.getReturnAddress().getPostalCode(), "78703");
+        assertEquals(warehouse.getReturnAddress().getCountry(), "US");
+        assertEquals(warehouse.getReturnAddress().getPhone(), "512-555-5555");
+//        assertEquals(warehouse.getReturnAddress().isResidential(), true);
+        assertEquals(warehouse.getReturnAddress().getAddressVerified(), null);
+
+        assertEquals(warehouse.getCreateDate(), "2015-07-02T08:38:31.4870000");
+        assertEquals(warehouse.isIsDefault(), true);
+
+    }
+
+    @Test
+    public void testCreateWarehouse() throws IOException, InterruptedException {
+
+        Warehouse warehousePayload = new Warehouse();
+        warehousePayload.setWarehouseId(12345);
+        warehousePayload.setWarehouseName("API Ship From Location");
+        Warehouse warehouse = api.createWarehouse(warehousePayload);
+
+        assertEquals(warehouse.getWarehouseId(), 12345);
+        assertEquals(warehouse.getWarehouseName(), "API Ship From Location");
+        assertEquals(warehouse.getOriginAddress().getName(), "API Warehouse");
+        assertEquals(warehouse.getOriginAddress().getCompany(), "ShipStation");
+        assertEquals(warehouse.getOriginAddress().getStreet1(), "2815 Exposition Blvd");
+        assertEquals(warehouse.getOriginAddress().getStreet2(), null);
+        assertEquals(warehouse.getOriginAddress().getStreet3(), null);
+        assertEquals(warehouse.getOriginAddress().getCity(), "Austin");
+        assertEquals(warehouse.getOriginAddress().getState(), "TX");
+        assertEquals(warehouse.getOriginAddress().getPostalCode(), "78703");
+        assertEquals(warehouse.getOriginAddress().getCountry(), "US");
+        assertEquals(warehouse.getOriginAddress().getPhone(), "512-555-5555");
+        assertEquals(warehouse.getOriginAddress().isResidential(), true);
+        assertEquals(warehouse.getOriginAddress().getAddressVerified(), null);
+
+        assertEquals(warehouse.getReturnAddress().getName(), "API Ship From Location");
+        assertEquals(warehouse.getReturnAddress().getCompany(), "ShipStation");
+        assertEquals(warehouse.getReturnAddress().getStreet1(), "2815 Exposition Blvd");
+        assertEquals(warehouse.getReturnAddress().getStreet2(), null);
+        assertEquals(warehouse.getReturnAddress().getStreet3(), null);
+        assertEquals(warehouse.getReturnAddress().getCity(), "Austin");
+        assertEquals(warehouse.getReturnAddress().getState(), "TX");
+        assertEquals(warehouse.getReturnAddress().getPostalCode(), "78703");
+        assertEquals(warehouse.getReturnAddress().getCountry(), "US");
+        assertEquals(warehouse.getReturnAddress().getPhone(), "512-555-5555");
+//        assertEquals(warehouse.getReturnAddress().isResidential(), true);
+        assertEquals(warehouse.getReturnAddress().getAddressVerified(), null);
+
+        assertEquals(warehouse.getCreateDate(), "2015-07-02T08:38:31.4870000");
+        assertEquals(warehouse.isIsDefault(), true);
+    }
+
+
+    @Test
+    public void testListWarehouse() throws IOException, InterruptedException {
+
+        List<Warehouse> warehouses = api.listWarehouses();
+
+        Warehouse warehouse = warehouses.get(1);
+        assertEquals(warehouse.getWarehouseId(), 14265);
+        assertEquals(warehouse.getWarehouseName(), "Austin");
+        assertEquals(warehouse.getOriginAddress().getName(), "Austin");
+        assertEquals(warehouse.getOriginAddress().getCompany(), "ShipStation");
+        assertEquals(warehouse.getOriginAddress().getStreet1(), "2815 Exposition Blvd");
+        assertEquals(warehouse.getOriginAddress().getStreet2(), "");
+        assertEquals(warehouse.getOriginAddress().getStreet3(), "");
+        assertEquals(warehouse.getOriginAddress().getCity(), "Austin");
+        assertEquals(warehouse.getOriginAddress().getState(), "TX");
+        assertEquals(warehouse.getOriginAddress().getPostalCode(), "78703");
+        assertEquals(warehouse.getOriginAddress().getCountry(), "US");
+        assertEquals(warehouse.getOriginAddress().getPhone(), "5124445555");
+        assertEquals(warehouse.getOriginAddress().isResidential(), false);
+        assertEquals(warehouse.getOriginAddress().getAddressVerified(), null);
+
+        assertEquals(warehouse.getReturnAddress().getName(), "ShipStation");
+        assertEquals(warehouse.getReturnAddress().getCompany(), "ShipStation");
+        assertEquals(warehouse.getReturnAddress().getStreet1(), "2815 Exposition Blvd");
+        assertEquals(warehouse.getReturnAddress().getStreet2(), "");
+        assertEquals(warehouse.getReturnAddress().getStreet3(), "");
+        assertEquals(warehouse.getReturnAddress().getCity(), "Austin");
+        assertEquals(warehouse.getReturnAddress().getState(), "TX");
+        assertEquals(warehouse.getReturnAddress().getPostalCode(), "78703");
+        assertEquals(warehouse.getReturnAddress().getCountry(), "US");
+        assertEquals(warehouse.getReturnAddress().getPhone(), "5124445555");
+        assertEquals(warehouse.getReturnAddress().isResidential(), false);
+        assertEquals(warehouse.getReturnAddress().getAddressVerified(), null);
+
+        assertEquals(warehouse.getCreateDate(), "2014-05-27T09:54:29.9600000");
+        assertEquals(warehouse.isIsDefault(), false);
+
+    }
+/*
+    @Test
+    public void testListWebhooks() throws IOException, InterruptedException {
+
+        ListWebhooks webhooks = api.listWebhooks();
+
+        assertEquals(webhooks.getWebhooks().get(0).isIsLabelAPIHook(), false);
+        assertEquals(webhooks.getWebhooks().get(0).getWebHookID(), 123);
+        assertEquals(webhooks.getWebhooks().get(0).getSellerID(), 100000);
+        assertEquals(webhooks.getWebhooks().get(0).getHookType(), "ITEM_ORDER_NOTIFY");
+        assertEquals(webhooks.getWebhooks().get(0).getMessageFormat(), "Json")
+        assertEquals(webhooks.getWebhooks().get(0).getUrl(), "http://example.endpoint/orders");
+        assertEquals(webhooks.getWebhooks().get(0).getName(), "My Order Webhook");
+        assertEquals(webhooks.getWebhooks().get(0).getBulkCopyBatchID(), null);
+        assertEquals(webhooks.getWebhooks().get(0).getBulkCopyBatchID(), null);
+        assertEquals(webhooks.getWebhooks().get(0).isIsActive(), null);
+        assertEquals(webhooks.getWebhooks().get(0).getWebhookLogs(), null);
+        assertEquals(webhooks.getWebhooks().get(0).getSeller(), null);
+        assertEquals(webhooks.getWebhooks().get(0).getStore(), null);
+
+    }
+    */
 }

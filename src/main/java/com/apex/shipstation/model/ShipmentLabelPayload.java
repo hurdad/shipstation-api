@@ -6,8 +6,8 @@ public class ShipmentLabelPayload {
     private String serviceCode;
     private String packageCode;
     private String confirmation;
-    private  String shipDate;
-    private  Weight weight;
+    private String shipDate;
+    private Weight weight;
     private Dimensions dimensions;
     private Address shipFrom;
     private Address shipTo;

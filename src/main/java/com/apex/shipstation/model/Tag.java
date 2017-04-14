@@ -1,6 +1,5 @@
 package com.apex.shipstation.model;
 
-
 public class Tag {
 
     private long tagId;

@@ -339,25 +339,25 @@ public class API {
         return mapper.readValue(res.readEntity(String.class), ListShipments.class);
     }
 
-    public ShipmentLabel createShipmentLabel(ShipmentLabelPayload shipmentLabelPayload) throws IOException, InterruptedException {
+    public Shipment createShipmentLabel(ShipmentLabelPayload shipmentLabelPayload) throws IOException, InterruptedException {
         String JSON = mapper.writeValueAsString(shipmentLabelPayload);
         Entity<String> payload = Entity.json(JSON);
         Response res = POST(apiBaseURL + "/shipments/createlabel", payload);
-        return mapper.readValue(res.readEntity(String.class), ShipmentLabel.class);
+        return mapper.readValue(res.readEntity(String.class), Shipment.class);
     }
 
-
-    public Rate getRates(RatePayload rate) throws IOException, InterruptedException {
+    public List<Rate> getRates(RatePayload rate) throws IOException, InterruptedException {
         String JSON = mapper.writeValueAsString(rate);
         Entity<String> payload = Entity.json(JSON);
         Response res = POST(apiBaseURL + "/shipments/getrates", payload);
-        return mapper.readValue(res.readEntity(String.class), Rate.class);
+        return mapper.readValue(res.readEntity(String.class), new TypeReference<List<Rate>>() {
+        });
     }
 
-    public SuccessResponse voidLabel(long shipmentId) throws IOException, InterruptedException {
+    public VoidLabelResponse voidLabel(long shipmentId) throws IOException, InterruptedException {
         Entity payload = Entity.json("{ 'shipmentId':" + shipmentId + "}");
         Response res = POST(apiBaseURL + "/shipments/voidlabel", payload);
-        return mapper.readValue(res.readEntity(String.class), SuccessResponse.class);
+        return mapper.readValue(res.readEntity(String.class), VoidLabelResponse.class);
     }
 
     public Store getStore(long storeId) throws IOException, InterruptedException {
@@ -377,7 +377,7 @@ public class API {
         return mapper.readValue(res.readEntity(String.class), StoreRefreshStatusResponse.class);
     }
 
-    public SuccessResponse refresStore(long storeId) throws IOException, InterruptedException {
+    public SuccessResponse refreshStore(long storeId) throws IOException, InterruptedException {
         Entity payload = Entity.json("{ ''storeId'':" + storeId + "}");
         Response res = POST(apiBaseURL + "/stores/refreshstore", payload);
         return mapper.readValue(res.readEntity(String.class), SuccessResponse.class);
@@ -390,7 +390,7 @@ public class API {
     }
 
     public List<Store> listStores(boolean showInactive) throws IOException, InterruptedException {
-        Response res = GET(apiBaseURL + "/stores?showInactive={showInactive}");
+        Response res = GET(apiBaseURL + "/stores?showInactive=" + (showInactive ? "true" : "false"));
         return mapper.readValue(res.readEntity(String.class), new TypeReference<List<Store>>() {
         });
     }
@@ -418,6 +418,7 @@ public class API {
 
         }
     */
+
     public Warehouse getWarehouse(long warehouseId) throws IOException, InterruptedException {
         Response res = GET(apiBaseURL + "/warehouses/" + warehouseId);
         return mapper.readValue(res.readEntity(String.class), Warehouse.class);
@@ -430,12 +431,13 @@ public class API {
         return mapper.readValue(res.readEntity(String.class), Warehouse.class);
     }
 
-    /*
-        createWarehouse() {
+    public Warehouse createWarehouse(Warehouse warehouse) throws IOException, InterruptedException {
+        String JSON = mapper.writeValueAsString(warehouse);
+        Entity<String> payload = Entity.json(JSON);
+        Response res = PUT(apiBaseURL + "/warehouses/createwarehouse", payload);
+        return mapper.readValue(res.readEntity(String.class), Warehouse.class);
+    }
 
-
-        }
-    */
     public List<Warehouse> listWarehouses() throws IOException, InterruptedException {
         Response res = GET(apiBaseURL + "/warehouses");
         return mapper.readValue(res.readEntity(String.class), new TypeReference<List<Warehouse>>() {
