@@ -444,12 +444,12 @@ public class API {
         });
     }
 
-/* Doesnt work due to uppercase json keys from api
+    /* Doesnt work due to uppercase json keys from api */
     public ListWebhooks listWebhooks() throws IOException, InterruptedException {
         Response res = GET(apiBaseURL + "/webhooks");
         return mapper.readValue(res.readEntity(String.class), ListWebhooks.class);
     }
-*/
+
     public int subscribeToWebhook(SubscribeWebhookPayload subscribeWebhookPayload) throws IOException, InterruptedException {
         String JSON = mapper.writeValueAsString(subscribeWebhookPayload);
         Entity<String> payload = Entity.json(JSON);

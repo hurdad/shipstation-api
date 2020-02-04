@@ -1,30 +1,23 @@
 package com.apex.shipstation;
 
-import com.apex.shipstation.model.*;
-import org.junit.*;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Test;
+
 import static org.junit.Assert.assertEquals;
+
+import com.apex.shipstation.model.*;
 
 public class APITest {
     private static API api;
 
     @BeforeClass
     public static void initAPI() {
-        api = new API("https://private-anon-6ac7877a1e-shipstation.apiary-mock.com", "key", "sec");
-    }
-
-    @Before
-    public void beforeEachTest() {
-
-    }
-
-    @After
-    public void afterEachTest() {
-
+        api = new API("https://private-anon-f3907bd0ce-shipstation.apiary-mock.com", "key", "secret");
     }
 
     @Test
@@ -47,11 +40,11 @@ public class APITest {
 
         List<Carrier> carriers = api.listCarriers();
 
-        assertEquals(carriers.get(0).getName(), "Express 1");
-        assertEquals(carriers.get(0).getCode(), "express_1");
-        assertEquals(carriers.get(0).getAccountNumber(), "fe71c33f");
+        assertEquals(carriers.get(0).getName(), "Stamps.com");
+        assertEquals(carriers.get(0).getCode(), "stamps_com");
+        assertEquals(carriers.get(0).getAccountNumber(), "SS123");
         assertEquals(carriers.get(0).isRequiresFundedAccount(), true);
-        assertEquals(carriers.get(0).getBalance(), 0.27, 0.01);
+        assertEquals(carriers.get(0).getBalance(), 24.27, 0.01);
 
     }
 
@@ -64,7 +57,7 @@ public class APITest {
         assertEquals(carrier.getCode(), "stamps_com");
         assertEquals(carrier.getAccountNumber(), "SS123");
         assertEquals(carrier.isRequiresFundedAccount(), true);
-        assertEquals(carrier.getBalance(), 24.14, 0.01);
+        assertEquals(carrier.getBalance(), 24.27, 0.01);
     }
 
     @Test
@@ -110,7 +103,7 @@ public class APITest {
 
         assertEquals(services.get(0).getCarrierCode(), "fedex");
         assertEquals(services.get(0).getCode(), "fedex_ground");
-        assertEquals(services.get(0).getName(), "FedEx Ground®");
+        assertEquals(services.get(0).getName(), "FedEx Ground" + Character.toString((char)174));
         assertEquals(services.get(0).isDomestic(), true);
         assertEquals(services.get(0).isInternational(), false);
     }
@@ -300,7 +293,7 @@ public class APITest {
         assertEquals(order.getAmountPaid(), 218.73, 0.01);
         assertEquals(order.getTaxAmount(), 5, 0.01);
         assertEquals(order.getShippingAmount(), 10, 0.01);
-        assertEquals(order.getCustomerNotes(), "Thanks for ordering!");
+        assertEquals(order.getCustomerNotes(), "Please ship as soon as possible!");
         assertEquals(order.getInternalNotes(), "Customer called and would like to upgrade shipping");
         assertEquals(order.isGift(), true);
         assertEquals(order.getGiftMessage(), "Thank you!");
@@ -648,7 +641,7 @@ public class APITest {
         assertEquals(order.getAmountPaid(), 218.73, 0.01);
         assertEquals(order.getTaxAmount(), 5, 0.01);
         assertEquals(order.getShippingAmount(), 10, 0.01);
-        assertEquals(order.getCustomerNotes(), "Thanks for ordering!");
+        assertEquals(order.getCustomerNotes(), "Please ship as soon as possible!");
         assertEquals(order.getInternalNotes(), "Customer called and would like to upgrade shipping");
         assertEquals(order.isGift(), true);
         assertEquals(order.getGiftMessage(), "Thank you!");
@@ -964,12 +957,12 @@ public class APITest {
 
         List<Rate> rates = api.getRates(rate);
 
-        assertEquals(rates.get(0).getServiceName(), "FedEx First Overnight®");
+        assertEquals(rates.get(0).getServiceName(), "FedEx First Overnight" + Character.toString((char)174));
         assertEquals(rates.get(0).getServiceCode(), "fedex_first_overnight");
         assertEquals(rates.get(0).getShipmentCost(), 87.8, 0.01);
         assertEquals(rates.get(0).getOtherCost(), 2.63, 0.001);
 
-        assertEquals(rates.get(1).getServiceName(), "FedEx Priority Overnight®");
+        assertEquals(rates.get(1).getServiceName(), "FedEx Priority Overnight" + Character.toString((char)174));
         assertEquals(rates.get(1).getServiceCode(), "fedex_priority_overnight");
         assertEquals(rates.get(1).getShipmentCost(), 50.23, 0.01);
         assertEquals(rates.get(1).getOtherCost(), 1.51, 0.001);
@@ -1055,7 +1048,6 @@ public class APITest {
 
     }
 
-
     @Test
     public void testRefreshStore() throws IOException, InterruptedException {
 
@@ -1132,6 +1124,8 @@ public class APITest {
         List<User> users = api.listUsers(true);
 
         assertEquals(users.get(0).getUserId(), "123456AB-ab12-3c4d-5e67-89f1abc1defa");
+        assertEquals(users.get(0).getUserName(), "SS-user1");
+        assertEquals(users.get(0).getName(), "Shipping Employee 1");
     }
 
 
@@ -1293,15 +1287,12 @@ public class APITest {
 
     }
 
-    /* Doesnt work due to uppercase json keys from api*/
-    @Ignore
     @Test
     public void testListWebhooks() throws IOException, InterruptedException {
 
-        /*
-         ListWebhooks webhooks = api.listWebhooks();
+        ListWebhooks webhooks = api.listWebhooks();
 
-        assertEquals(webhooks.getWebhooks().get(0).isIsLabelAPIHook(), false);
+        assertEquals(webhooks.getWebhooks().get(0).isLabelAPIHook(), false);
         assertEquals(webhooks.getWebhooks().get(0).getWebHookID(), 123);
         assertEquals(webhooks.getWebhooks().get(0).getSellerID(), 100000);
         assertEquals(webhooks.getWebhooks().get(0).getHookType(), "ITEM_ORDER_NOTIFY");
@@ -1310,13 +1301,11 @@ public class APITest {
         assertEquals(webhooks.getWebhooks().get(0).getName(), "My Order Webhook");
         assertEquals(webhooks.getWebhooks().get(0).getBulkCopyBatchID(), null);
         assertEquals(webhooks.getWebhooks().get(0).getBulkCopyBatchID(), null);
-        assertEquals(webhooks.getWebhooks().get(0).isIsActive(), null);
-        assertEquals(webhooks.getWebhooks().get(0).getWebhookLogs(), null);
+        assertEquals(webhooks.getWebhooks().get(0).isActive(), true);
+        assertEquals(webhooks.getWebhooks().get(0).getWebhookLogs(), new ArrayList<String>());
         assertEquals(webhooks.getWebhooks().get(0).getSeller(), null);
         assertEquals(webhooks.getWebhooks().get(0).getStore(), null);
-*/
     }
-
 
     @Test
     public void testSubscribeToWebhook() throws IOException, InterruptedException {

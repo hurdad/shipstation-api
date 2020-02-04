@@ -6,6 +6,7 @@ public class Shipment {
 
     private long shipmentId;
     private long orderId;
+    private String orderKey;
     private String userId;
     private String customerEmail;
     private String orderNumber;
@@ -48,6 +49,14 @@ public class Shipment {
 
     public void setOrderId(long orderId) {
         this.orderId = orderId;
+    }
+
+    public String getOrderKey() {
+        return orderKey;
+    }
+
+    public void setOrderKey(String orderKey) {
+        this.orderKey = orderKey;
     }
 
     public String getUserId() {

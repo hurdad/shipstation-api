@@ -5,6 +5,7 @@ import java.util.List;
 public class Product {
 
     private long productId;
+    private String aliases;
     private String sku;
     private String name;
     private double price;
@@ -42,6 +43,14 @@ public class Product {
 
     public void setProductId(long productId) {
         this.productId = productId;
+    }
+
+    public String getAliases() {
+        return aliases;
+    }
+
+    public void setAliases(String aliases) {
+        this.aliases = aliases;
     }
 
     public String getSku() {

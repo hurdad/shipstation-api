@@ -2,9 +2,11 @@ package com.apex.shipstation.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Webhook {
 
-    private boolean IsIsLabelAPIHook;
+    private boolean IsLabelAPIHook;
     private long WebHookID;
     private long SellerID;
     private long StoreID;
@@ -19,18 +21,20 @@ public class Webhook {
     private String Seller;
     private String Store;
 
-    public boolean isIsLabelAPIHook() {
-        return IsIsLabelAPIHook;
+    public boolean isLabelAPIHook() {
+        return IsLabelAPIHook;
     }
 
+    @JsonProperty("IsLabelAPIHook")
     public void setIsLabelAPIHook(boolean isLabelAPIHook) {
-        IsIsLabelAPIHook = isLabelAPIHook;
+        IsLabelAPIHook = isLabelAPIHook;
     }
 
     public long getWebHookID() {
         return WebHookID;
     }
 
+    @JsonProperty("WebHookID")
     public void setWebHookID(long webHookID) {
         WebHookID = webHookID;
     }
@@ -39,6 +43,7 @@ public class Webhook {
         return SellerID;
     }
 
+    @JsonProperty("SellerID")
     public void setSellerID(long sellerID) {
         SellerID = sellerID;
     }
@@ -47,6 +52,7 @@ public class Webhook {
         return StoreID;
     }
 
+    @JsonProperty("StoreID")
     public void setStoreID(long storeID) {
         StoreID = storeID;
     }
@@ -55,6 +61,7 @@ public class Webhook {
         return HookType;
     }
 
+    @JsonProperty("HookType")
     public void setHookType(String hookType) {
         HookType = hookType;
     }
@@ -63,6 +70,7 @@ public class Webhook {
         return MessageFormat;
     }
 
+    @JsonProperty("MessageFormat")
     public void setMessageFormat(String messageFormat) {
         MessageFormat = messageFormat;
     }
@@ -71,6 +79,7 @@ public class Webhook {
         return Url;
     }
 
+    @JsonProperty("Url")
     public void setUrl(String url) {
         Url = url;
     }
@@ -79,6 +88,7 @@ public class Webhook {
         return Name;
     }
 
+    @JsonProperty("Name")
     public void setName(String name) {
         Name = name;
     }
@@ -87,6 +97,7 @@ public class Webhook {
         return BulkCopyBatchID;
     }
 
+    @JsonProperty("BulkCopyBatchID")
     public void setBulkCopyBatchID(String bulkCopyBatchID) {
         BulkCopyBatchID = bulkCopyBatchID;
     }
@@ -95,6 +106,7 @@ public class Webhook {
         return BulkCopyRecordID;
     }
 
+    @JsonProperty("BulkCopyRecordID")
     public void setBulkCopyRecordID(String bulkCopyRecordID) {
         BulkCopyRecordID = bulkCopyRecordID;
     }
@@ -103,6 +115,7 @@ public class Webhook {
         return Active;
     }
 
+    @JsonProperty("Active")
     public void setActive(boolean active) {
         Active = active;
     }
@@ -111,6 +124,7 @@ public class Webhook {
         return WebhookLogs;
     }
 
+    @JsonProperty("WebhookLogs")
     public void setWebhookLogs(List<String> webhookLogs) {
         WebhookLogs = webhookLogs;
     }
@@ -119,6 +133,7 @@ public class Webhook {
         return Seller;
     }
 
+    @JsonProperty("Seller")
     public void setSeller(String seller) {
         Seller = seller;
     }
@@ -127,6 +142,7 @@ public class Webhook {
         return Store;
     }
 
+    @JsonProperty("Store")
     public void setStore(String store) {
         Store = store;
     }
