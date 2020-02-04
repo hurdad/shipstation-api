@@ -1,7 +1,8 @@
-# shipstation-api
-[![Build Status](https://travis-ci.org/hurdad/shipstation-api.svg?branch=master)](https://travis-ci.org/hurdad/shipstation-api)
+# ShipStation Java API Client
 
-Java 8 interface to ShipStation HTTP API
+![CI Status](https://github.com/kdunn926/shipstation-api/workflows/Java%20CI/badge.svg?branch=master)
+
+ShipStation Java API Client
 
 ## Build Requirements
 ```
@@ -25,16 +26,16 @@ $ mvn package
 ```
 
 ## Usage
+See APITest.java for examples of each API call
 ```
-# See APITest.java for examples of each API call
-import com.apex.shipstation.API;
 API api = new API("https://ssapi.shipstation.com", "api_key", "api_secret");
+
 Order order = api.getOrder(123456789);
+
 System.out.println(order.getOrderNumber());
 ```
 
 ## Known Issues
 ```
-listUsers - does not work with the mock api. I have confirmed it works on the production api.
-listWebhools - does not work due to uppercase keys in the JSON returned from the call. 
+listUsers - does not work with the mock api.
 ```
