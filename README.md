@@ -26,7 +26,7 @@ $ mvn package
 ```
 
 ## Usage
-See APITest.java for examples of each API call
+See [APITest.java](src/test/java/com/apex/shipstation/APITest.java) for examples of each API call.
 ```
 API api = new API("https://ssapi.shipstation.com", "api_key", "api_secret");
 
