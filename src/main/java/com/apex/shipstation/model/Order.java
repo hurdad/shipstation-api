@@ -2,8 +2,19 @@ package com.apex.shipstation.model;
 
 import java.util.List;
 
+import javax.persistence.Id;
+
 public class Order {
 
+    public enum STATUS {
+      awaiting_payment,
+      awaiting_shipment,
+      shipped,
+      on_hold,
+      canceled
+    };
+
+    @Id
     private long orderId;
     private String orderNumber;
     private String orderKey;
@@ -12,7 +23,7 @@ public class Order {
     private String modifyDate;
     private String paymentDate;
     private String shipByDate;
-    private String orderStatus;
+    private STATUS orderStatus;
     private long customerId;
     private String customerUsername;
     private String customerEmail;
@@ -109,11 +120,11 @@ public class Order {
         this.shipByDate = shipByDate;
     }
 
-    public String getOrderStatus() {
+    public STATUS getOrderStatus() {
         return orderStatus;
     }
 
-    public void setOrderStatus(String orderStatus) {
+    public void setOrderStatus(STATUS orderStatus) {
         this.orderStatus = orderStatus;
     }
 

@@ -2,8 +2,11 @@ package com.apex.shipstation.model;
 
 import java.util.List;
 
+import javax.persistence.Id;
+
 public class Shipment {
 
+    @Id
     private long shipmentId;
     private long orderId;
     private String orderKey;

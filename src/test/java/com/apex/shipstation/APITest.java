@@ -17,7 +17,7 @@ public class APITest {
 
     @BeforeClass
     public static void initAPI() {
-        api = new API("https://private-anon-f3907bd0ce-shipstation.apiary-mock.com", "key", "secret");
+        api = new API("https://private-anon-87b8c11456-shipstation.apiary-mock.com", "key", "secret");
     }
 
     @Test
@@ -244,7 +244,7 @@ public class APITest {
         assertEquals(order.getModifyDate(), "2015-09-08T11:03:12.3800000");
         assertEquals(order.getPaymentDate(), "2015-06-29T08:46:27.0000000");
         assertEquals(order.getShipByDate(), "2015-07-05T00:00:00.0000000");
-        assertEquals(order.getOrderStatus(), "awaiting_shipment");
+        assertEquals(order.getOrderStatus(), Order.STATUS.awaiting_shipment);
         assertEquals(order.getCustomerId(), 37701499);
         assertEquals(order.getCustomerUsername(), "headhoncho@whitehouse.gov");
         assertEquals(order.getBillTo().getName(), "The President");
@@ -466,7 +466,7 @@ public class APITest {
         assertEquals(order.getModifyDate(), "2015-08-17T09:24:16.4800000");
         assertEquals(order.getPaymentDate(), "2015-06-28T17:46:27.0000000");
         assertEquals(order.getShipByDate(), "2015-07-05T00:00:00.0000000");
-        assertEquals(order.getOrderStatus(), "awaiting_shipment");
+        assertEquals(order.getOrderStatus(), Order.STATUS.awaiting_shipment);
         assertEquals(order.getCustomerId(), 63310475);
         assertEquals(order.getCustomerUsername(), "sholmes1854@methodsofdetection.com");
         assertEquals(order.getCustomerUsername(), "sholmes1854@methodsofdetection.com");
@@ -579,6 +579,53 @@ public class APITest {
     }
 
     @Test
+    public void testListOrderByStatus() throws IOException, InterruptedException {
+
+        ListOrders listOrders = api.listOrdersByStatus(Order.STATUS.shipped);
+        Order order = listOrders.getOrders().get(0);
+
+        assertEquals(order.getOrderId(), 987654321);
+        assertEquals(order.getOrderNumber(), "Test-International-API-DOCS");
+        assertEquals(order.getOrderKey(), "Test-International-API-DOCS");
+        // Mock API returns an invalid response for this field
+        //assertEquals(order.getOrderStatus(), Order.STATUS.awaiting_shipment);
+        assertEquals(order.getCustomerId(), 63310475);
+        assertEquals(order.getCustomerUsername(), "sholmes1854@methodsofdetection.com");
+        assertEquals(order.getBillTo().getName(), "Sherlock Holmes");
+        assertEquals(order.getBillTo().getCompany(), null);
+        assertEquals(order.getBillTo().getStreet1(), null);
+        assertEquals(order.getBillTo().getStreet2(), null);
+        assertEquals(order.getBillTo().getStreet3(), null);
+        assertEquals(order.getBillTo().getCity(), null);
+        assertEquals(order.getBillTo().getState(), null);
+        assertEquals(order.getBillTo().getPostalCode(), null);
+        assertEquals(order.getBillTo().getPhone(), null);
+        assertEquals(order.getBillTo().isResidential(), false);
+        assertEquals(order.getBillTo().getState(), null);
+        assertEquals(order.getBillTo().getAddressVerified(), null);
+
+        assertEquals(order.getShipTo().getName(), "Sherlock Holmes");
+        assertEquals(order.getShipTo().getCompany(), "");
+        assertEquals(order.getShipTo().getStreet1(), "221 B Baker St");
+        assertEquals(order.getShipTo().getStreet2(), "");
+        assertEquals(order.getShipTo().getStreet3(), null);
+        assertEquals(order.getShipTo().getCity(), "London");
+        assertEquals(order.getShipTo().getState(), "");
+        assertEquals(order.getShipTo().getPostalCode(), "NW1 6XE");
+        assertEquals(order.getShipTo().getPhone(), null);
+        assertEquals(order.getShipTo().isResidential(), true);
+        assertEquals(order.getShipTo().getAddressVerified(), "Address not yet validated");
+
+        List<OrderItem> items = order.getItems();
+
+        assertEquals(items.size(), 2);
+
+        assertEquals(listOrders.getTotal(), 2);
+        assertEquals(listOrders.getPage(), 1);
+        assertEquals(listOrders.getPages(), 0);
+    }
+
+    @Test
     public void testListOrderByTag() throws IOException, InterruptedException {
 
         ListOrders listOrders = api.listOrdersByTag("orderStatus=awaiting_payment");
@@ -592,7 +639,7 @@ public class APITest {
         assertEquals(order.getModifyDate(), "2015-08-17T09:43:12.5500000");
         assertEquals(order.getPaymentDate(), "2015-06-29T08:46:27.0000000");
         assertEquals(order.getShipByDate(), "2015-07-05T00:00:00.0000000");
-        assertEquals(order.getOrderStatus(), "awaiting_shipment");
+        assertEquals(order.getOrderStatus(), Order.STATUS.awaiting_shipment);
         assertEquals(order.getCustomerId(), 37701499);
         assertEquals(order.getCustomerUsername(), "headhoncho@whitehouse.gov");
         assertEquals(order.getBillTo().getName(), "The President");
@@ -999,7 +1046,7 @@ public class APITest {
         assertEquals(store.getLastRefreshAttempt(), "2014-12-16T09:47:05.457");
         assertEquals(store.getCreateDate(), "2014-11-06T15:21:13.223");
         assertEquals(store.isAutoRefresh(), true);
-        assertEquals(store.getStatusMappings().get(0).getOrderStatus(), "awaiting_payment");
+        assertEquals(store.getStatusMappings().get(0).getOrderStatus(), Order.STATUS.awaiting_payment.toString());
         assertEquals(store.getStatusMappings().get(0).getStatusKey(), "Pending");
 
     }
@@ -1030,7 +1077,7 @@ public class APITest {
         assertEquals(store.getLastRefreshAttempt(), "2014-12-16T09:47:05.457");
         assertEquals(store.getCreateDate(), "2014-11-06T15:21:13.223");
         assertEquals(store.isAutoRefresh(), true);
-        assertEquals(store.getStatusMappings().get(0).getOrderStatus(), "awaiting_payment");
+        assertEquals(store.getStatusMappings().get(0).getOrderStatus(), Order.STATUS.awaiting_payment.toString());
         assertEquals(store.getStatusMappings().get(0).getStatusKey(), "Pending");
 
     }

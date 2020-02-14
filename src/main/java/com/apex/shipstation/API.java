@@ -277,6 +277,11 @@ public class API {
         return mapper.readValue(res.readEntity(String.class), ListOrders.class);
     }
 
+    public ListOrders listOrdersByStatus(Order.STATUS status) throws IOException, InterruptedException {
+        Response res = GET(apiBaseURL + "/orders?orderStatus=" + status.toString());
+        return mapper.readValue(res.readEntity(String.class), ListOrders.class);
+    }
+
     public ListOrders listOrdersByTag(String query) throws IOException, InterruptedException {
         Response res = GET(apiBaseURL + "/orders/listbytag?" + query);
         return mapper.readValue(res.readEntity(String.class), ListOrders.class);
