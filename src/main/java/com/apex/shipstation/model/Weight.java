@@ -1,9 +1,12 @@
 package com.apex.shipstation.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Weight {
 
     private long value;
     private String units;
+    private long WeightUnits;
 
     public long getValue() {
         return value;
@@ -19,5 +22,14 @@ public class Weight {
 
     public void setUnits(String units) {
         this.units = units;
+    }
+
+    public long getWeightUnits() {
+        return WeightUnits;
+    }
+
+    @JsonProperty("WeightUnits")
+    public void setWeightUnits(long weightUnits) {
+        this.WeightUnits = weightUnits;
     }
 }
